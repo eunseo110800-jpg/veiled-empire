@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>베일드 제국 — 세계관 아카이브</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #F7F5F0;
+      color: #2E332D;
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.7;
+    }
+
+    /* 상단 헤더 (제국 기본 설정) */
+    header {
+      background: linear-gradient(135deg, #2D3E33, #465E4E);
+      color: #F7F5F0;
+      text-align: center;
+      padding: 60px 20px;
+      border-bottom: 4px solid #C5A880;
+    }
+
+    header h1 {
+      font-family: 'Gowun Batang', serif;
+      font-size: 38px;
+      margin: 0 0 10px 0;
+      letter-spacing: 3px;
+    }
+
+    .motto {
+      font-family: 'Gowun Batang', serif;
+      color: #E6D5B8;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background-color: rgba(255, 255, 255, 0.12);
+      border: 1px solid #C5A880;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    /* 본문 공통 레이아웃 */
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      background-color: #FFFFFF;
+      border: 1.5px solid #DFD9CE;
+      border-radius: 20px;
+      padding: 35px;
+      margin-bottom: 35px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    }
+
+    h2 {
+      font-family: 'Gowun Batang', serif;
+      color: #2D3E33;
+      border-bottom: 2px solid #E6D5B8;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+
+    /* 1. 원형 대륙 인터랙티브 지도 */
+    .map-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .continent-wrapper {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 동심원 지형 (바깥쪽 -> 안쪽) */
+    .ring {
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid #FFFFFF;
+    }
+
+    .ring:hover {
+      box-shadow: 0 0 15px rgba(197, 168, 128, 0.8);
+    }
+
+    .ring-beach {
+      width: 220px;
+      height: 220px;
+      background-color: #D8E2DC;
+    }
+
+    .ring-forest {
+      width: 150px;
+      height: 150px;
+      background-color: #84A59D;
+    }
+
+    .ring-center {
+      width: 80px;
+      height: 80px;
+      background-color: #C5A880;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* 동서남북 4개 생활관 버튼 */
+    .dorm-btn {
+      position: absolute;
+      background-color: #2D3E33;
+      color: #F7F5F0;
+      border: 2px solid #C5A880;
+      border-radius: 15px;
+      padding: 5px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .dorm-btn:hover {
+      background-color: #C5A880;
+      color: #2D3E33;
+      font-weight: bold;
+    }
+
+    .north { top: 0; left: 50%; transform: translateX(-50%); }
+    .south { bottom: 0; left: 50%; transform: translateX(-50%); }
+    .east  { right: -10px; top: 50%; transform: translateY(-50%); }
+    .west  { left: -10px; top: 50%; transform: translateY(-50%); }
+
+    /* 지도 설명 박스 */
+    .map-info {
+      flex: 1;
+      min-width: 260px;
+      background-color: #F7F5F0;
+      border-left: 4px solid #C5A880;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .map-info h3 {
+      margin-top: 0;
+      color: #2D3E33;
+    }
+
+    /* 2. 제국 조직 구조 */
+    .org-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .org-box {
+      background-color: #F7F5F0;
+      border: 1px solid #DFD9CE;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .org-box h3 {
+      margin-top: 0;
+      color: #465E4E;
+      font-size: 18px;
+    }
+
+    .army-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .army-tag {
+      background-color: #E6E2D8;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    /* 3. 등장인물 필터 & 카드 */
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background-color: #F7F5F0;
+      border: 1.5px solid #C5A880;
+      color: #2E332D;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background-color: #2D3E33;
+      color: #FFFFFF;
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .char-card {
+      border: 1.5px solid #DFD9CE;
+      border-radius: 15px;
+      padding: 20px;
+      background-color: #FCFBF9;
+    }
+
+    .char-role {
+      display: inline-block;
+      font-size: 12px;
+      background-color: #E6D5B8;
+      color: #2D3E33;
+      padding: 3px 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .char-name {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 4px 0;
+    }
+
+    .char-meta {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 제국 소개 -->
+  <header>
+    <h1>베일드 제국</h1>
+    <p class="motto">"신이 가장 아름다운 꽃을 심을 땅을 찾으니, 그게 이 땅이 되었다."</p>
+    <div class="badges">
+      <span class="badge">🌸 국교: 꽃의 신 나필레리아</span>
+      <span class="badge">🪙 화폐 단위: 룬 (Rune)</span>
+      <span class="badge">🧭 지형: 원형 대륙</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. 지리 구조 섹션 -->
+    <section>
+      <h2>🗺️ 원형 대륙 지리 구조</h2>
+      <p>원이나 방위 버튼을 클릭하면 각 지역의 설정을 확인할 수 있습니다.</p>
+      
+      <div class="map-container">
+        <div class="continent-wrapper">
+          <!-- 동서남북 생활관 -->
+          <button class="dorm-btn north" onclick="showLocation('북 · 4생활관', '대륙 북쪽 끝에 위치한 생활관입니다. 부관리자 크시와 이든이 소속되어 있습니다.')">북 · 4생활관</button>
+          <button class="dorm-btn east" onclick="showLocation('동 · 1생활관', '대륙 동쪽 끝에 위치한 생활관입니다.')">동 · 1생활관</button>
+          <button class="dorm-btn south" onclick="showLocation('남 · 3생활관', '대륙 남쪽 끝에 위치한 생활관입니다.')">남 · 3생활관</button>
+          <button class="dorm-btn west" onclick="showLocation('서 · 2생활관', '대륙 서쪽 끝에 위치한 생활관입니다.')">서 · 2생활관</button>
+
+          <!-- 원형 지형 (바깥쪽부터 안쪽으로 겹침) -->
+          <div class="ring ring-beach" onclick="showLocation('3. 해변가 마을', '숲띠 너머, 바다에 가까운 작은 마을입니다. 남부 마을에는 유명한 카페와 알바생들이 지내는 창고가 있습니다.')">
+            <div class="ring ring-forest" onclick="showLocation('2. 숲띠', '도심을 둥글게 둘러싸고 있는 울창한 숲 지대입니다.')">
+              <div class="ring ring-center" onclick="showLocation('1. 도심', '원형 대륙의 정중앙에 위치한 제국의 핵심 구역입니다.')">
+                도심
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 클릭 시 내용이 바뀌는 설명 상자 -->
+        <div class="map-info" id="map-info-box">
+          <h3 id="loc-title">1. 도심</h3>
+          <p id="loc-desc">원형 대륙의 정중앙에 위치한 제국의 핵심 구역입니다. 왼쪽 지도에서 다른 구역이나 생활관을 눌러보세요!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 제국 조직 구조 섹션 -->
+    <section>
+      <h2>⚔️ 제국 조직 구조</h2>
+      <div class="org-grid">
+        <div class="org-box">
+          <h3>👑 총괄</h3>
+          <p><strong>총관리자</strong> — 제국 전체에 단 1명만 존재하는 최고 책임자</p>
+        </div>
+        <div class="org-box">
+          <h3>🏛️ 생활관별 편제 (4개 생활관 각각)</h3>
+          <ul>
+            <li>부관리자 2명</li>
+            <li>책임관리자 6명</li>
+            <li>관리자 15명</li>
+            <li>제국군 (다수)</li>
+          </ul>
+          <div class="army-tags">
+            <span class="army-tag">감사병</span>
+            <span class="army-tag">감독병</span>
+            <span class="army-tag">보고병</span>
+            <span class="army-tag">감시병</span>
+            <span class="army-tag">관리병</span>
+            <span class="army-tag">생활병</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 등장인물 섹션 -->
+    <section>
+      <h2>👤 등장인물</h2>
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterChars('all', this)">전체 보기</button>
+        <button class="filter-btn" onclick="filterChars('official', this)">제국 관직</button>
+        <button class="filter-btn" onclick="filterChars('cafe', this)">남부 마을 카페</button>
+        <button class="filter-btn" onclick="filterChars('org', this)">핵심 조직</button>
+      </div>
+
+      <div class="char-grid">
+        <!-- 제국 관직 인물 -->
+        <div class="char-card" data-group="official">
+          <span class="char-role">총관리자</span>
+          <div class="char-name">나민 (여)</div>
+          <div class="char-meta">소속: 제국 전체</div>
+        </div>
+
+        <div class="char-card" data-group="official">
+          <span class="char-role">부관리자</span>
+          <div class="char-name">크시 (여)</div>
+          <div class="char-meta">소속: 4생활관 (북)</div>
+        </div>
+
+        <div class="char-card" data-group="official">
+          <span class="char-role">부관리자</span>
+          <div class="char-name">이든 (남)</div>
+          <div class="char-meta">소속: 4생활관 (북)</div>
+        </div>
+
+        <!-- 남부 마을 카페 인물 -->
+        <div class="char-card" data-group="cafe">
+          <span class="char-role">카페 알바생</span>
+          <div class="char-name">루먀 (여)</div>
+          <div class="char-meta">주거지: 남부 마을 카페 '창고'</div>
+        </div>
+
+        <div class="char-card" data-group="cafe">
+          <span class="char-role">카페 알바생</span>
+          <div class="char-name">프사이 (여)</div>
+          <div class="char-meta">주거지: 남부 마을 카페 '창고'</div>
+        </div>
+
+        <!-- 핵심 조직 -->
+        <div class="char-card" data-group="org">
+          <span class="char-role">비밀 핵심 집단</span>
+          <div class="char-name">조직 (구성원 추가 예정)</div>
+          <div class="char-meta">나쁜 세력이 아니라, 제국이 돌아가게 하는 핵심적이고 중요한 존재</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 세계관 메모 & 챕터 공간 -->
+    <section>
+      <h2>📖 챕터 & 세계관 메모</h2>
+      <p>앞으로 소설 챕터와 추가 설정을 채워 나갈 공간입니다.</p>
+    </section>
+  </main>
+
+  <!-- 자바스크립트: 버튼 클릭 시 동작을 담당 -->
+  <script>
+    // 1. 지도 구역 클릭 시 오른쪽 설명 글 바꾸기
+    function showLocation(title, desc) {
+      event.stopPropagation(); // 안쪽 원을 눌렀을 때 바깥쪽 원까지 같이 눌리는 현상 방지!
+      document.getElementById('loc-title').innerText = title;
+      document.getElementById('loc-desc').innerText = desc;
+    }
+
+    // 2. 등장인물 필터 버튼 클릭 시 해당 그룹만 보여주기
+    function filterChars(group, clickedBtn) {
+      // 모든 버튼에서 active 색깔 빼고, 방금 누른 버튼에만 색칠하기
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      clickedBtn.classList.add('active');
+
+      // 모든 인물 카드를 하나씩 확인해서 보여줄지 숨길지 결정하기
+      const cards = document.querySelectorAll('.char-card');
+      cards.forEach(card => {
+        if (group === 'all' || card.dataset.group === group) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
