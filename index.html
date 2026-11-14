@@ -99,7 +99,6 @@
       justify-content: center;
     }
 
-    /* 동심원 지형 (바깥쪽 -> 안쪽) */
     .ring {
       border-radius: 50%;
       display: flex;
@@ -135,7 +134,6 @@
       font-size: 14px;
     }
 
-    /* 동서남북 4개 생활관 버튼 */
     .dorm-btn {
       position: absolute;
       background-color: #2D3E33;
@@ -158,7 +156,6 @@
     .east  { right: -10px; top: 50%; transform: translateY(-50%); }
     .west  { left: -10px; top: 50%; transform: translateY(-50%); }
 
-    /* 지도 설명 박스 */
     .map-info {
       flex: 1;
       min-width: 260px;
@@ -264,6 +261,41 @@
       font-size: 14px;
       color: #666;
     }
+
+    /* 4. 기밀 문서 봉인 해제 스타일 */
+    .secret-box {
+      background-color: #2D3E33;
+      color: #F7F5F0;
+      border: 2px solid #C5A880;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .secret-content {
+      filter: blur(6px);
+      user-select: none;
+      transition: filter 0.5s ease;
+      text-align: left;
+      margin-top: 15px;
+    }
+
+    .secret-content.unlocked {
+      filter: blur(0);
+      user-select: auto;
+    }
+
+    .unlock-btn {
+      background-color: #C5A880;
+      color: #2D3E33;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+    }
   </style>
 </head>
 <body>
@@ -287,13 +319,11 @@
       
       <div class="map-container">
         <div class="continent-wrapper">
-          <!-- 동서남북 생활관 -->
           <button class="dorm-btn north" onclick="showLocation('북 · 4생활관', '대륙 북쪽 끝에 위치한 생활관입니다. 부관리자 크시와 이든이 소속되어 있습니다.')">북 · 4생활관</button>
           <button class="dorm-btn east" onclick="showLocation('동 · 1생활관', '대륙 동쪽 끝에 위치한 생활관입니다.')">동 · 1생활관</button>
           <button class="dorm-btn south" onclick="showLocation('남 · 3생활관', '대륙 남쪽 끝에 위치한 생활관입니다.')">남 · 3생활관</button>
           <button class="dorm-btn west" onclick="showLocation('서 · 2생활관', '대륙 서쪽 끝에 위치한 생활관입니다.')">서 · 2생활관</button>
 
-          <!-- 원형 지형 (바깥쪽부터 안쪽으로 겹침) -->
           <div class="ring ring-beach" onclick="showLocation('3. 해변가 마을', '숲띠 너머, 바다에 가까운 작은 마을입니다. 남부 마을에는 유명한 카페와 알바생들이 지내는 창고가 있습니다.')">
             <div class="ring ring-forest" onclick="showLocation('2. 숲띠', '도심을 둥글게 둘러싸고 있는 울창한 숲 지대입니다.')">
               <div class="ring ring-center" onclick="showLocation('1. 도심', '원형 대륙의 정중앙에 위치한 제국의 핵심 구역입니다.')">
@@ -303,7 +333,6 @@
           </div>
         </div>
 
-        <!-- 클릭 시 내용이 바뀌는 설명 상자 -->
         <div class="map-info" id="map-info-box">
           <h3 id="loc-title">1. 도심</h3>
           <p id="loc-desc">원형 대륙의 정중앙에 위치한 제국의 핵심 구역입니다. 왼쪽 지도에서 다른 구역이나 생활관을 눌러보세요!</p>
@@ -350,7 +379,6 @@
       </div>
 
       <div class="char-grid">
-        <!-- 제국 관직 인물 -->
         <div class="char-card" data-group="official">
           <span class="char-role">총관리자</span>
           <div class="char-name">나민 (여)</div>
@@ -369,7 +397,6 @@
           <div class="char-meta">소속: 4생활관 (북)</div>
         </div>
 
-        <!-- 남부 마을 카페 인물 -->
         <div class="char-card" data-group="cafe">
           <span class="char-role">카페 알바생</span>
           <div class="char-name">루먀 (여)</div>
@@ -382,7 +409,6 @@
           <div class="char-meta">주거지: 남부 마을 카페 '창고'</div>
         </div>
 
-        <!-- 핵심 조직 -->
         <div class="char-card" data-group="org">
           <span class="char-role">비밀 핵심 집단</span>
           <div class="char-name">조직 (구성원 추가 예정)</div>
@@ -391,30 +417,35 @@
       </div>
     </section>
 
-    <!-- 4. 세계관 메모 & 챕터 공간 -->
+    <!-- 4. 기밀 문서 (봉인 해제 기능) -->
     <section>
-      <h2>📖 챕터 & 세계관 메모</h2>
-      <p>앞으로 소설 챕터와 추가 설정을 채워 나갈 공간입니다.</p>
+      <h2>🔒 1급 기밀: 베일 너머의 기록</h2>
+      <div class="secret-box">
+        <button class="unlock-btn" id="seal-btn" onclick="unlockSecret()">🌸 나필레리아의 인장 해제하기</button>
+        <div class="secret-content" id="secret-text">
+          <p><strong>[기밀 01 · '조직'의 진짜 역할]</strong><br>
+          제국의 평화로운 꽃밭 아래, 4개 생활관의 균형이 무너지지 않도록 보이지 않는 곳에서 시스템을 조율하는 핵심 집단입니다.</p>
+          <p><strong>[기밀 02 · 남부 마을 '창고'의 비밀]</strong><br>
+          카페 알바생 루먀와 프사이가 머무는 창고는 사실 제국 외곽과 핵심 조직을 잇는 비밀 연락 거점입니다.</p>
+        </div>
+      </div>
     </section>
   </main>
 
-  <!-- 자바스크립트: 버튼 클릭 시 동작을 담당 -->
   <script>
-    // 1. 지도 구역 클릭 시 오른쪽 설명 글 바꾸기
+    // 1. 지도 구역 클릭 시 설명 바꾸기
     function showLocation(title, desc) {
-      event.stopPropagation(); // 안쪽 원을 눌렀을 때 바깥쪽 원까지 같이 눌리는 현상 방지!
+      event.stopPropagation();
       document.getElementById('loc-title').innerText = title;
       document.getElementById('loc-desc').innerText = desc;
     }
 
     // 2. 등장인물 필터 버튼 클릭 시 해당 그룹만 보여주기
     function filterChars(group, clickedBtn) {
-      // 모든 버튼에서 active 색깔 빼고, 방금 누른 버튼에만 색칠하기
       const buttons = document.querySelectorAll('.filter-btn');
       buttons.forEach(btn => btn.classList.remove('active'));
       clickedBtn.classList.add('active');
 
-      // 모든 인물 카드를 하나씩 확인해서 보여줄지 숨길지 결정하기
       const cards = document.querySelectorAll('.char-card');
       cards.forEach(card => {
         if (group === 'all' || card.dataset.group === group) {
@@ -423,6 +454,14 @@
           card.style.display = 'none';
         }
       });
+    }
+
+    // 3. 기밀 문서 봉인 해제하기
+    function unlockSecret() {
+      document.getElementById('secret-text').classList.add('unlocked');
+      const btn = document.getElementById('seal-btn');
+      btn.innerText = '🔓 베일이 걷혔습니다';
+      btn.style.backgroundColor = '#84A59D';
     }
   </script>
 
