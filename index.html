@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>베일드 제국 — 세계관 아카이브</title>
-  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <title>베일드 제국 — 시민 안내 및 아카이브</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -15,10 +15,11 @@
       background-color: #F7F5F0;
       color: #2E332D;
       font-family: 'Noto Sans KR', sans-serif;
-      line-height: 1.7;
+      line-height: 1.75;
       transition: background-color 0.5s, color 0.5s;
     }
 
+    /* 해킹 모드 매트릭스 배경 */
     #matrix-canvas {
       display: none;
       position: fixed;
@@ -27,25 +28,39 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      opacity: 0.25;
+      opacity: 0.22;
       pointer-events: none;
     }
 
+    /* 상단 헤더 */
     header {
-      background: linear-gradient(135deg, #2D3E33, #465E4E);
+      background: linear-gradient(135deg, #2D3E33, #4A6352);
       color: #F7F5F0;
       text-align: center;
-      padding: 60px 20px;
+      padding: 65px 20px;
       border-bottom: 4px solid #C5A880;
+      transition: all 0.5s ease;
+    }
+
+    .system-tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 12px;
+      background-color: rgba(197, 168, 128, 0.25);
+      color: #E6D5B8;
+      margin-bottom: 12px;
     }
 
     header h1 {
       font-family: 'Gowun Batang', serif;
-      font-size: 38px;
-      margin: 0 0 10px 0;
-      letter-spacing: 3px;
+      font-size: 40px;
+      margin: 0 0 12px 0;
+      letter-spacing: 4px;
     }
 
+    /* 숨겨진 트리거 ('일' 글자) */
     #hidden-trigger {
       cursor: default;
       user-select: none;
@@ -73,8 +88,9 @@
       font-size: 14px;
     }
 
+    /* 본문 레이아웃 */
     main {
-      max-width: 920px;
+      max-width: 940px;
       margin: 40px auto;
       padding: 0 20px;
     }
@@ -95,6 +111,15 @@
       border-bottom: 2px solid #E6D5B8;
       padding-bottom: 10px;
       margin-top: 0;
+    }
+
+    /* 조직 전용 섹션 (기본 시민 시점에서는 완전히 숨김) */
+    .org-only {
+      display: none;
+    }
+
+    body.org-mode .org-only {
+      display: block;
     }
 
     /* 1. 원형 대륙 지도 */
@@ -174,7 +199,16 @@
 
     .map-info h3 { margin-top: 0; color: #2D3E33; }
 
-    /* 2. 조직 구조 */
+    /* 숏 트리 & 남부 명물 배너 (시민 시점 하이라이트) */
+    .sherbet-box {
+      background: linear-gradient(135deg, #F3F6F1, #EAE3D5);
+      border: 1.5px solid #C5A880;
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    /* 2. 제국 조직 구조 */
     .org-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -229,7 +263,7 @@
 
     .char-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
       gap: 18px;
     }
 
@@ -255,71 +289,64 @@
     .char-meta { font-size: 13px; color: #7A7469; margin-bottom: 10px; font-weight: 600; }
     .char-desc { font-size: 14px; color: #3D423C; margin: 0; }
 
-    /* 4. 암호 입력형 기밀 문서 */
-    .secret-terminal {
-      background-color: #1A241E;
-      color: #E6D5B8;
-      border: 2px solid #C5A880;
-      border-radius: 15px;
-      padding: 25px;
-      text-align: center;
+    /* 조직 9부대 카드 그리드 */
+    .line-block {
+      border: 1px solid #00FF66;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      background-color: rgba(0, 255, 102, 0.04);
     }
 
-    .code-input-group {
+    .unit-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .unit-item {
+      border: 1px solid rgba(0, 255, 102, 0.45);
+      background: rgba(0, 0, 0, 0.45);
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* 조직 단말기 OS 시뮬레이터 */
+    .device-tabs {
       display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
+      gap: 8px;
+      margin-bottom: 15px;
       flex-wrap: wrap;
     }
 
-    .code-input {
-      background-color: #0F1511;
-      border: 1.5px solid #C5A880;
-      color: #FFFFFF;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-size: 15px;
-      text-align: center;
-      outline: none;
-    }
-
-    .code-btn {
-      background-color: #C5A880;
-      color: #1A241E;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-weight: bold;
+    .device-tab {
+      background: #020A05;
+      border: 1px solid #00FF66;
+      color: #00FF66;
+      padding: 7px 14px;
       cursor: pointer;
+      font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
+      font-size: 13px;
+      border-radius: 6px;
     }
 
-    .error-msg {
-      color: #FF6B6B;
+    .device-tab.active, .device-tab:hover {
+      background: #00FF66;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .device-screen {
+      background: #020804;
+      border: 1px solid #00FF66;
+      padding: 20px;
+      border-radius: 10px;
       font-size: 14px;
-      margin-top: 10px;
-      min-height: 20px;
     }
 
-    .secret-content {
-      display: none;
-      text-align: left;
-      background-color: rgba(0, 0, 0, 0.35);
-      border-left: 3px solid #84A59D;
-      padding: 22px;
-      margin-top: 20px;
-      border-radius: 8px;
-      color: #F7F5F0;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-8px); }
-      75% { transform: translateX(8px); }
-    }
-    .shake { animation: shake 0.3s ease; }
-
-    /* 숨겨진 관리자 접속 모달 */
+    /* 숨겨진 관리자 접속 팝업 (모달) */
     #admin-modal {
       display: none;
       position: fixed;
@@ -360,11 +387,12 @@
       background: #00FF66;
       color: #000;
       border: none;
-      padding: 10px 20px;
-      font-family: 'Share Tech Mono', monospace;
+      padding: 9px 16px;
+      font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
       font-weight: bold;
       cursor: pointer;
-      margin: 5px;
+      margin: 4px;
+      border-radius: 4px;
     }
 
     /* ACCESS GRANTED 연출 */
@@ -383,7 +411,7 @@
     }
 
     .granted-title {
-      font-size: 48px;
+      font-size: 46px;
       letter-spacing: 5px;
       border: 3px solid #00FF66;
       padding: 20px 40px;
@@ -391,7 +419,7 @@
       text-shadow: 0 0 15px #00FF66;
     }
 
-    /* 해커 편집 모드 */
+    /* 해커 상단 툴바 */
     #hacker-toolbar {
       display: none;
       position: sticky;
@@ -400,55 +428,81 @@
       background: #050F08;
       border-bottom: 2px solid #00FF66;
       color: #00FF66;
-      padding: 12px 20px;
-      font-family: 'Share Tech Mono', monospace;
+      padding: 10px 20px;
+      font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
     }
 
-    body.hacker-mode {
+    /* 조직(해커) 모드 테마 */
+    body.org-mode {
       background-color: #050806;
       color: #A8FFC8;
     }
 
-    body.hacker-mode #matrix-canvas { display: block; }
+    body.org-mode #matrix-canvas { display: block; }
 
-    body.hacker-mode header {
-      background: rgba(5, 18, 10, 0.9);
+    body.org-mode header {
+      background: rgba(5, 18, 10, 0.92);
       border-bottom: 2px solid #00FF66;
     }
 
-    body.hacker-mode section,
-    body.hacker-mode .org-box,
-    body.hacker-mode .char-card,
-    body.hacker-mode .map-info {
-      background-color: rgba(8, 20, 13, 0.88);
+    body.org-mode .system-tag {
+      background-color: rgba(0, 255, 102, 0.15);
+      color: #00FF66;
+      border: 1px solid #00FF66;
+    }
+
+    body.org-mode section,
+    body.org-mode .org-box,
+    body.org-mode .char-card,
+    body.org-mode .map-info,
+    body.org-mode .sherbet-box {
+      background: rgba(8, 20, 13, 0.9);
       border-color: #00FF66;
       color: #A8FFC8;
       box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
     }
 
-    body.hacker-mode h1,
-    body.hacker-mode h2,
-    body.hacker-mode h3,
-    body.hacker-mode .motto,
-    body.hacker-mode .char-desc,
-    body.hacker-mode .char-meta {
+    body.org-mode h1,
+    body.org-mode h2,
+    body.org-mode h3,
+    body.org-mode .motto,
+    body.org-mode .char-desc,
+    body.org-mode .char-meta {
       color: #00FF66;
       border-color: #00FF66;
     }
 
-    body.hacker-mode [contenteditable="true"] {
+    body.org-mode .army-tag,
+    body.org-mode .char-role {
+      background-color: rgba(0, 255, 102, 0.2);
+      color: #00FF66;
+      border: 1px solid #00FF66;
+    }
+
+    body.org-mode .filter-btn {
+      background-color: #07120B;
+      color: #00FF66;
+      border-color: #00FF66;
+    }
+
+    body.org-mode .filter-btn.active {
+      background-color: #00FF66;
+      color: #000;
+    }
+
+    body.org-mode [contenteditable="true"] {
       outline: 1px dashed rgba(0, 255, 102, 0.5);
       padding: 2px 4px;
       border-radius: 4px;
     }
 
-    body.hacker-mode [contenteditable="true"]:focus {
+    body.org-mode [contenteditable="true"]:focus {
       outline: 2px solid #00FF66;
-      background-color: rgba(0, 255, 102, 0.1);
+      background-color: rgba(0, 255, 102, 0.12);
     }
   </style>
 </head>
@@ -456,40 +510,92 @@
 
   <canvas id="matrix-canvas"></canvas>
 
+  <!-- 해커 편집 툴바 -->
   <div id="hacker-toolbar">
-    <span>[SYSTEM OVERRIDE] ACCESS GRANTED — 글자를 클릭해 직접 편집하세요</span>
+    <span>[SYSTEM OVERRIDE] ACCESS GRANTED — 나민 &amp; '조직' 기밀 관제 모드</span>
     <div>
+      <button class="terminal-btn" id="view-switch-btn" onclick="togglePerspectiveInEditor()">시점 전환 (현재: 조직 기밀)</button>
       <button class="terminal-btn" onclick="copyEditedCode()">수정된 전체 코드 복사</button>
-      <button class="terminal-btn" style="background:#FF4D4D; color:#FFF;" onclick="exitHackerMode()">편집 종료</button>
+      <button class="terminal-btn" style="background:#FF4D4D; color:#FFF;" onclick="exitHackerMode()">접속 종료</button>
     </div>
   </div>
 
+  <!-- 상단 헤더 -->
   <header>
+    <div class="system-tag dual editable"
+         data-citizen="🌸 베일드 제국 공식 시민 안내서"
+         data-org="[CLASSIFIED] 총관리자 나민 · 비밀 '조직' 통합 관제 네트워크">🌸 베일드 제국 공식 시민 안내서</div>
     <h1>베<span id="hidden-trigger" onclick="openAdminModal()">일</span>드 제국</h1>
-    <p class="motto editable">"신이 가장 아름다운 꽃을 심을 땅을 찾으니, 그게 이 땅이 되었다."</p>
+    <p class="motto dual editable"
+       data-citizen="&quot;신이 가장 아름다운 꽃을 심을 땅을 찾으니, 그게 이 땅이 되었다.&quot;"
+       data-org="&quot;평화는 저절로 피어나지 않는다. 보이지 않는 9개의 톱니바퀴가 베일을 지탱할 뿐.&quot;">"신이 가장 아름다운 꽃을 심을 땅을 찾으니, 그게 이 땅이 되었다."</p>
     <div class="badges">
       <span class="badge editable">🌸 국교: 꽃의 신 나필레리아</span>
       <span class="badge editable">🪙 화폐 단위: 룬 (Rune)</span>
-      <span class="badge editable">🧭 지형: 원형 대륙</span>
+      <span class="badge dual editable"
+            data-citizen="🧭 지형: 축복받은 원형 대륙"
+            data-org="🛡️ 시스템: 결계 '베일' 유지 중">🧭 지형: 축복받은 원형 대륙</span>
     </div>
   </header>
 
   <main>
-    <!-- 1. 지리 구조 -->
+    <!-- 1. 원형 대륙 지리 구조 -->
     <section>
-      <h2 class="editable">🗺️ 원형 대륙 지리 구조</h2>
-      <p class="editable">원이나 동서남북 생활관 버튼을 클릭하면 각 지역의 상세 설정이 표시됩니다.</p>
+      <h2 class="dual editable"
+          data-citizen="🗺️ 우리의 터전, 원형 대륙 안내"
+          data-org="🗺️ 원형 대륙 관제 지도 &amp; 사각지대 현황">🗺️ 우리의 터전, 원형 대륙 안내</h2>
+      <p class="dual editable"
+         data-citizen="도심부터 숲띠, 해변가 마을과 4개의 생활관까지—각 구역을 눌러 특징을 둘러보세요."
+         data-org="구역을 클릭해 표면 행정 현황과 '조직'의 실제 관제 목적을 확인하십시오.">도심부터 숲띠, 해변가 마을과 4개의 생활관까지—각 구역을 눌러 특징을 둘러보세요.</p>
       
       <div class="map-container">
         <div class="continent-wrapper">
-          <button class="dorm-btn north" onclick="showLocation(event, '북 · 4생활관 [서리의 요새]', '대륙에서 가장 춥고 규율이 엄격한 최전선 요충지입니다. 제국군 정예가 주둔하며, 부관리자 크시와 이든이 소속되어 있습니다.')">북 · 4생활관</button>
-          <button class="dorm-btn east" onclick="showLocation(event, '동 · 1생활관 [새벽의 온실]', '해가 가장 먼저 뜨는 풍요로운 생산 거점입니다. 나필레리아의 신성한 꽃을 재배하고, 제국 화폐인 \'룬\'을 주조합니다.')">동 · 1생활관</button>
-          <button class="dorm-btn south" onclick="showLocation(event, '남 · 3생활관 [파도의 경계]', '바닷바람이 부는 가장 자유롭고 느슨한 구역입니다. 감시의 눈길이 비교적 얇아 외지인과 비밀이 모이기 쉽습니다.')">남 · 3생활관</button>
-          <button class="dorm-btn west" onclick="showLocation(event, '서 · 2생활관 [황혼의 서고]', '해가 지는 차가운 행정 구역입니다. 제국 전역의 보고병과 감사병이 올린 감시 기록이 집결합니다.')">서 · 2생활관</button>
+          <button class="dorm-btn north"
+                  data-title-citizen="북 · 4생활관 (북부 생활 구역)"
+                  data-desc-citizen="맑고 선선한 공기가 흐르는 북쪽 생활관입니다. 부관리자 크시님과 이든님이 주민들의 안전하고 질서 있는 생활을 세심하게 보살피고 있습니다."
+                  data-title-org="북 · 4생활관 [최전선 통제 구역]"
+                  data-desc-org="제국군 정예가 밀집한 최고 규율 구역. 원칙주의자 크시는 남부(3생활관)의 보고 누락을 의심 중이며, 현장파 이든은 비공식 단서를 추적하고 있습니다."
+                  onclick="showLocation(event, this)">북 · 4생활관</button>
 
-          <div class="ring ring-beach" onclick="showLocation(event, '3. 해변가 마을', '숲띠 너머 바다와 맞닿은 상업·휴양 지대입니다. 특히 남부 해변 마을에는 제국에서 가장 유명한 카페와 알바생들이 지내는 창고가 있습니다.')">
-            <div class="ring ring-forest" onclick="showLocation(event, '2. 숲띠', '도심을 둥글게 감싸고 있는 거대한 완충 지대입니다. 일반인의 무단 출입이 통제되며, 변이된 식물을 정화하는 역할을 합니다.')">
-              <div class="ring ring-center" onclick="showLocation(event, '1. 도심 [나필레리아의 온실]', '원형 대륙의 정중앙에 위치한 심장부입니다. 제국에 단 1명뿐인 총관리자 나민이 머무는 중앙 청사가 자리 잡고 있습니다.')">
+          <button class="dorm-btn east"
+                  data-title-citizen="동 · 1생활관 (아침 햇살 구역)"
+                  data-desc-citizen="가장 먼저 아침 해가 떠오르는 화사한 생활관입니다. 나필레리아 신전의 꽃을 가꾸고 화폐인 '룬'을 만드는 평화로운 장인들의 터전입니다."
+                  data-title-org="동 · 1생활관 [마력 꽃 배양 및 룬 주조]"
+                  data-desc-org="베일 유지에 필수적인 순수 나필레리아 화초를 배양하는 핵심 보급지. 조직 5부대와 은밀히 샘플 데이터를 교류합니다."
+                  onclick="showLocation(event, this)">동 · 1생활관</button>
+
+          <button class="dorm-btn south"
+                  data-title-citizen="남 · 3생활관 (바닷바람 구역)"
+                  data-desc-citizen="따뜻한 바닷바람과 여유로운 분위기가 매력적인 남쪽 생활관입니다. 해변가 마을의 유명한 카페와 가까워 언제나 활기가 넘칩니다."
+                  data-title-org="남 · 3생활관 [감시 사각지대 · 연락 거점]"
+                  data-desc-org="제국군의 감시망이 가장 느슨한 자유 구역. 남부 마을 카페 '창고'가 위치해 있어 1~3부대와 4~6부대가 자료를 주고받는 핵심 경유지입니다."
+                  onclick="showLocation(event, this)">남 · 3생활관</button>
+
+          <button class="dorm-btn west"
+                  data-title-citizen="서 · 2생활관 (노을의 도서관 구역)"
+                  data-desc-citizen="아름다운 노을과 함께 제국의 역사와 기록이 보관되는 차분한 생활관입니다. 제국 전역의 소식이 이곳으로 모여 깔끔하게 정리됩니다."
+                  data-title-org="서 · 2생활관 [감사·보고 데이터 집결지]"
+                  data-desc-org="제국군 보고병·감사병의 모든 서류가 모이는 곳. 조직 4부대가 이곳의 공식 기록을 해킹·대조해 이상 징후의 패턴을 분석합니다."
+                  onclick="showLocation(event, this)">서 · 2생활관</button>
+
+          <div class="ring ring-beach"
+               data-title-citizen="3. 해변가 마을"
+               data-desc-citizen="푸른 바다와 맞닿은 정겨운 해안 마을입니다. 특히 남부 마을에는 숲띠에서 갓 추출한 '숏 트리 샤벳'으로 유명한 명물 카페가 있습니다!"
+               data-title-org="3. 해변가 마을 [외곽 경계선]"
+               data-desc-org="대륙 외곽 결계(베일)와 가장 인접한 완충 지대. 최근 '베일을 찢는 자들'의 침투 흔적이 포착되어 1·3부대가 집중 감시 중입니다."
+               onclick="showLocation(event, this)">
+            <div class="ring ring-forest"
+                 data-title-citizen="2. 숲띠 (산책과 채집의 숲)"
+                 data-desc-citizen="도심을 포근하게 감싸 안은 햇살 가득한 산책 숲입니다. 시민 누구나 가볍게 거닐 수 있으며, 카페의 인기 재료인 '숏 트리'가 자라는 곳이기도 합니다."
+                 data-title-org="2. 숲띠 [숏 트리 자생지 및 1차 완충망]"
+                 data-desc-org="평온한 산책로처럼 보이지만, 인간의 극단적 감정이나 적대 세력의 간섭을 받으면 '숏 트리'가 변이합니다. 2부대가 수시로 변이 샘플을 채집합니다."
+                 onclick="showLocation(event, this)">
+              <div class="ring ring-center"
+                   data-title-citizen="1. 도심 (제국의 심장)"
+                   data-desc-citizen="원형 대륙 정중앙에 자리한 아름답고 평화로운 중심지입니다. 총관리자 나민님이 제국 전체의 번영과 조화를 이끌고 있습니다."
+                   data-title-org="1. 도심 [중앙 통제실]"
+                   data-desc-org="총관리자 나민의 집무실이 위치한 곳. 표면 행정과 비밀 '조직'의 최상위 작전이 교차하는 제국의 두뇌입니다."
+                   onclick="showLocation(event, this)">
                 도심
               </div>
             </div>
@@ -497,27 +603,47 @@
         </div>
 
         <div class="map-info">
-          <h3 id="loc-title" class="editable">1. 도심 [나필레리아의 온실]</h3>
-          <p id="loc-desc" class="editable">원형 대륙의 정중앙에 위치한 심장부입니다. 제국에 단 1명뿐인 총관리자 나민이 머무는 중앙 청사가 자리 잡고 있습니다. 왼쪽 지도에서 다른 구역을 눌러보세요!</p>
+          <h3 id="loc-title" class="dual editable"
+              data-citizen="2. 숲띠 (산책과 채집의 숲)"
+              data-org="2. 숲띠 [숏 트리 자생지 및 1차 완충망]">2. 숲띠 (산책과 채집의 숲)</h3>
+          <p id="loc-desc" class="dual editable"
+             data-citizen="도심을 포근하게 감싸 안은 햇살 가득한 산책 숲입니다. 시민 누구나 가볍게 거닐 수 있으며, 카페의 인기 재료인 '숏 트리'가 자라는 곳이기도 합니다."
+             data-org="평온한 산책로처럼 보이지만, 인간의 극단적 감정이나 적대 세력의 간섭을 받으면 '숏 트리'가 변이합니다. 2부대가 수시로 변이 샘플을 채집합니다.">도심을 포근하게 감싸 안은 햇살 가득한 산책 숲입니다. 시민 누구나 가볍게 거닐 수 있으며, 카페의 인기 재료인 '숏 트리'가 자라는 곳이기도 합니다.</p>
         </div>
+      </div>
+
+      <!-- 숲띠 & 숏 트리 샤벳 박스 -->
+      <div class="sherbet-box">
+        <strong class="dual editable"
+                data-citizen="🍧 제국의 명물: 숲띠의 '숏 트리(Short Tree)'와 샤벳"
+                data-org="🧪 [생태 보고] 숏 트리(Short Tree) 추출액의 이중성">🍧 제국의 명물: 숲띠의 '숏 트리(Short Tree)'와 샤벳</strong>
+        <p style="margin: 8px 0 0 0; font-size: 14px;" class="dual editable"
+           data-citizen="숲띠를 산책하다 보면 어른 허리춤 높이의 아담한 나무 '숏 트리'를 만날 수 있습니다. 숏 트리에서 추출한 맑은 수액을 곱게 갈아 얼린 '숏 트리 샤벳'은 남부 마을 카페의 최고 인기 메뉴로, 한 입 먹으면 마음이 편안해지는 달콤한 향이 특징입니다."
+           data-org="정상 숏 트리 추출액은 시민들의 정서를 안정시켜 결계(베일) 유지에 도움을 줍니다. 그러나 '베일을 찢는 자들'이 주입하는 오염 인자에 노출되면 붉게 변이하여 베일을 잠식하므로, 2부대 채집 및 5부대 해독이 필수적입니다.">숲띠를 산책하다 보면 어른 허리춤 높이의 아담한 나무 '숏 트리'를 만날 수 있습니다. 숏 트리에서 추출한 맑은 수액을 곱게 갈아 얼린 '숏 트리 샤벳'은 남부 마을 카페의 최고 인기 메뉴로, 한 입 먹으면 마음이 편안해지는 달콤한 향이 특징입니다.</p>
       </div>
     </section>
 
-    <!-- 2. 조직 구조 -->
+    <!-- 2. 제국 조직 구조 -->
     <section>
-      <h2 class="editable">⚔️ 제국 조직 구조</h2>
+      <h2 class="dual editable"
+          data-citizen="🏛️ 제국 행정 및 수호 편제"
+          data-org="⚔️ 제국 공식 감시망 구조 (표면 시스템)">🏛️ 제국 행정 및 수호 편제</h2>
       <div class="org-grid">
         <div class="org-box">
           <h3 class="editable">👑 총괄</h3>
-          <p class="editable"><strong>총관리자</strong> — 제국 전체에 단 1명만 존재하는 최고 책임자. 표면의 질서와 나필레리아의 평화를 총괄합니다.</p>
+          <p class="dual editable"
+             data-citizen="<strong>총관리자 (1명)</strong> — 나필레리아의 뜻을 받들어 제국 전체의 평화와 조화를 이끄는 유일한 지도자입니다."
+             data-org="<strong>총관리자 (나민)</strong> — 제국 유일의 최고 책임자. 공식 제국군으로 막지 못하는 비일상적 위협을 처리하기 위해 비밀 '조직'을 묵인·공조합니다."><strong>총관리자 (1명)</strong> — 나필레리아의 뜻을 받들어 제국 전체의 평화와 조화를 이끄는 유일한 지도자입니다.</p>
         </div>
         <div class="org-box">
-          <h3 class="editable">🏛️ 생활관별 편제 (4개 생활관 각각)</h3>
+          <h3 class="editable">🛡️ 생활관별 편제 (4개 생활관 각각)</h3>
           <ul>
             <li class="editable">부관리자 2명</li>
             <li class="editable">책임관리자 6명</li>
             <li class="editable">관리자 15명</li>
-            <li class="editable">제국군 (다수)</li>
+            <li class="dual editable"
+                data-citizen="제국군 — 시민들의 안전하고 쾌적한 일상을 돕는 6개 전담 병과"
+                data-org="제국군 — 감정 폭주 및 결계 이상을 24시간 감시·통제하는 6개 병과">제국군 — 시민들의 안전하고 쾌적한 일상을 돕는 6개 전담 병과</li>
           </ul>
           <div class="army-tags">
             <span class="army-tag editable">감사병</span>
@@ -533,12 +659,13 @@
 
     <!-- 3. 등장인물 -->
     <section>
-      <h2 class="editable">👤 등장인물</h2>
+      <h2 class="dual editable"
+          data-citizen="👤 제국의 주요 인물"
+          data-org="👤 주요 인물 파일 (표면 신분 vs 실제 역할)">👤 제국의 주요 인물</h2>
       <div class="filter-buttons">
         <button class="filter-btn active" onclick="filterChars('all', this)">전체 보기</button>
         <button class="filter-btn" onclick="filterChars('official', this)">제국 관직</button>
         <button class="filter-btn" onclick="filterChars('cafe', this)">남부 마을 카페</button>
-        <button class="filter-btn" onclick="filterChars('org', this)">핵심 조직</button>
       </div>
 
       <div class="char-grid">
@@ -546,64 +673,113 @@
           <span class="char-role editable">총관리자</span>
           <div class="char-name editable">나민 (여)</div>
           <div class="char-meta editable">소속: 제국 전체 (도심)</div>
-          <p class="char-desc editable">온화한 미소 뒤에 냉철한 계산을 숨긴 최고 책임자. 공식 시스템의 한계를 알기에 비밀 '조직'의 존재를 묵인하고 공조합니다.</p>
+          <p class="char-desc dual editable"
+             data-citizen="언제나 온화한 미소로 제국 시민들을 아끼는 존경받는 총관리자입니다."
+             data-org="온화한 가면 뒤에 냉철한 판단력을 숨긴 총관리자. 공식 시스템의 한계를 알기에 비밀 '조직'과 은밀히 연결되어 있습니다.">언제나 온화한 미소로 제국 시민들을 아끼는 존경받는 총관리자입니다.</p>
         </div>
 
         <div class="char-card" data-group="official">
           <span class="char-role editable">부관리자</span>
           <div class="char-name editable">크시 (여)</div>
           <div class="char-meta editable">소속: 4생활관 (북)</div>
-          <p class="char-desc editable">빈틈없는 원칙주의자. 4생활관의 치안을 칼같이 통제하며, 최근 남부(3생활관) 쪽에서 보고 누락이 잦아지는 것을 주시하고 있습니다.</p>
+          <p class="char-desc dual editable"
+             data-citizen="북쪽 4생활관의 질서와 안전을 빈틈없이 책임지는 든든한 부관리자입니다."
+             data-org="철저한 원칙주의자. 최근 남부(3생활관) 방면에서 감시 보고가 자주 누락되는 것을 수상히 여겨 예의주시 중입니다.">북쪽 4생활관의 질서와 안전을 빈틈없이 책임지는 든든한 부관리자입니다.</p>
         </div>
 
         <div class="char-card" data-group="official">
           <span class="char-role editable">부관리자</span>
           <div class="char-name editable">이든 (남)</div>
           <div class="char-meta editable">소속: 4생활관 (북)</div>
-          <p class="char-desc editable">크시와 정반대인 유연한 현장파. 엄격한 병사들 사이의 완충제 역할을 하며, 서류에 남지 않는 사람 냄새 나는 단서를 포착합니다.</p>
+          <p class="char-desc dual editable"
+             data-citizen="다정하고 유쾌한 성격으로 4생활관 주민들과 병사들에게 인기가 많은 부관리자입니다."
+             data-org="크시와 정반대인 유연한 현장파. 서류에 남지 않는 사소한 이상 징후와 사람 냄새 나는 단서를 귀신같이 포착합니다.">다정하고 유쾌한 성격으로 4생활관 주민들과 병사들에게 인기가 많은 부관리자입니다.</p>
         </div>
 
         <div class="char-card" data-group="cafe">
           <span class="char-role editable">카페 알바생</span>
           <div class="char-name editable">루먀 (여)</div>
           <div class="char-meta editable">주거지: 남부 마을 카페 '창고'</div>
-          <p class="char-desc editable">남부 최고 인기 카페의 간판 알바생. 넉살 좋고 눈치가 백단이라 손님들의 수다 속에서 제국의 이상 징후를 가장 먼저 캐치합니다.</p>
+          <p class="char-desc dual editable"
+             data-citizen="남부 마을 최고 인기 카페의 밝고 친절한 알바생! 숲띠에서 숏 트리를 따와 맛있는 샤벳을 만듭니다."
+             data-org="눈치 백단의 현장 정보원. 손님들의 가벼운 수다 속에서 '베일을 찢는 자들'의 접근 징후를 가장 먼저 걸러냅니다.">남부 마을 최고 인기 카페의 밝고 친절한 알바생! 숲띠에서 숏 트리를 따와 맛있는 샤벳을 만듭니다.</p>
         </div>
 
         <div class="char-card" data-group="cafe">
           <span class="char-role editable">카페 알바생</span>
           <div class="char-name editable">프사이 (여)</div>
           <div class="char-meta editable">주거지: 남부 마을 카페 '창고'</div>
-          <p class="char-desc editable">말수가 적고 차분한 레시피 담당. 루먀와 함께 카페 뒤편 '창고'에서 지내며, 밤이 되면 창고 지하의 진짜 기능을 관리합니다.</p>
-        </div>
-
-        <div class="char-card" data-group="org">
-          <span class="char-role editable">비밀 핵심 집단</span>
-          <div class="char-name editable">조직 (구성원 추가 예정)</div>
-          <div class="char-meta editable">소속: 제국 이면</div>
-          <p class="char-desc editable">반역 집단이 아니라, 제국이 멈추지 않도록 뒤에서 썩은 뿌리를 도려내고 결계(베일)를 수리하는 그림자 유지보수 집단입니다.</p>
+          <p class="char-desc dual editable"
+             data-citizen="차분하고 꼼꼼한 성격의 레시피 담당 알바생. 루먀와 함께 아늑한 창고 방에서 지내고 있습니다."
+             data-org="창고 지하 비밀 중계소의 관리자. 1~3부대가 넘긴 채집 샘플과 단말기 데이터를 4~6부대 분석 라인으로 전송합니다.">차분하고 꼼꼼한 성격의 레시피 담당 알바생. 루먀와 함께 아늑한 창고 방에서 지내고 있습니다.</p>
         </div>
       </div>
     </section>
 
-    <!-- 4. 암호 입력형 기밀 문서 -->
-    <section>
-      <h2 class="editable">🔒 1급 기밀: 베일 너머의 기록</h2>
-      <div class="secret-terminal" id="secret-box">
-        <p style="margin:0;">열람하려면 제국의 보안 코드를 입력하세요. (힌트: 국교의 신 이름)</p>
-        <div class="code-input-group">
-          <input type="text" id="doc-code" class="code-input" placeholder="보안 코드 입력...">
-          <button class="code-btn" onclick="unlockSecretDoc()">해독 실행</button>
-        </div>
-        <div class="error-msg" id="doc-error"></div>
+    <!-- [조직 시점 전용 1] 비밀 '조직' 9부대 편제 & 호출 코드 -->
+    <section class="org-only">
+      <h2 class="editable">🕸️ 비밀 '조직' — 9부대 파이프라인 &amp; 호출 규약</h2>
+      <p class="editable">조직은 제국을 무너뜨리는 적이 아니라, 제국이 멈추지 않도록 뒤에서 톱니바퀴를 조율하는 핵심 집단입니다.<br>
+      <strong>[호출 코드 규칙]</strong> <code>라인번호 - 알파벳(부대 내 서열순, A=부대장) - 부대번호</code> (예: <code>1-A-1</code>, <code>2-B-5</code>, <code>3-A-9</code>)</p>
 
-        <div class="secret-content" id="secret-text">
-          <p class="editable"><strong>[기밀 01 · 베일의 법칙과 감시 시스템]</strong><br>
-          대륙을 지키는 결계 '베일'은 나필레리아의 꽃에서 나오는 마력으로 유지됩니다. 하지만 꽃이 인간의 분노·탐욕 같은 격한 감정을 흡수하면 결계를 갉아먹는 독초로 변이하기 때문에, 제국군이 24시간 일상을 감시하고 관리해야만 합니다.</p>
-          <p class="editable"><strong>[기밀 02 · '조직'의 진짜 역할]</strong><br>
-          총관리자 나민이 규율로 겉의 질서를 지킨다면, '조직'은 규율 바깥의 방법으로 변이된 뿌리를 제거하고 베일을 보수하는 핵심 집단입니다.</p>
-          <p class="editable"><strong>[기밀 03 · 남부 마을 '창고'의 비밀]</strong><br>
-          루먀와 프사이가 머무는 카페 뒤편 창고 지하에는 도심과 4개 생활관의 사각지대를 잇는 비밀 연락망과 베일 관측 장치가 숨겨져 있습니다.</p>
+      <div class="line-block">
+        <strong class="editable">▶ 제1라인: 현장 탐사 부대 (1 · 2 · 3부대)</strong>
+        <div class="unit-list">
+          <div class="unit-item editable"><strong>1부대 [선봉 · 지형 탐사]</strong><br>이상 징후 발생 구역에 최우선 진입하여 지형 변화 및 진입로를 확보합니다.</div>
+          <div class="unit-item editable"><strong>2부대 [물질 · 생태 채집]</strong><br>변이된 숏 트리, 오염 잔류물 등 현장 샘플을 손상 없이 채집·회수합니다.</div>
+          <div class="unit-item editable"><strong>3부대 [잠입 · 탐문 조사]</strong><br>시민과 제국군 사이에 섞여 소문과 목격담, 적대 세력의 동선을 추적합니다.</div>
+        </div>
+      </div>
+
+      <div class="line-block">
+        <strong class="editable">▶ 제2라인: 자료 분석 부대 (4 · 5 · 6부대)</strong>
+        <div class="unit-list">
+          <div class="unit-item editable"><strong>4부대 [기록 · 패턴 대조]</strong><br>3부대의 탐문 자료와 서부(2생활관) 공식 보고서를 대조해 사건 배후를 계산합니다.</div>
+          <div class="unit-item editable"><strong>5부대 [성분 · 현상 감정]</strong><br>2부대가 가져온 샘플을 분석해 변이 원인을 규명하고 해독 약제를 제조합니다.</div>
+          <div class="unit-item editable"><strong>6부대 [작전 설계 · 지휘]</strong><br>4·5부대의 분석 결과를 종합해 최종 종결 작전을 설계하고 제3라인에 하달합니다.</div>
+        </div>
+      </div>
+
+      <div class="line-block">
+        <strong class="editable">▶ 제3라인: 전투 실행 및 사건 종결 (7 · 8 · 9부대)</strong>
+        <div class="unit-list">
+          <div class="unit-item editable"><strong>7부대 [무력 제압 · 정면 전투]</strong><br>통제가 불가능한 위협 대상이나 적대 세력을 최전선에서 직접 제압합니다.</div>
+          <div class="unit-item editable"><strong>8부대 [봉인 · 현장 수복]</strong><br>전투 흔적을 지우고 균열이 간 베일과 지형을 복구해 시민들의 일상을 지킵니다.</div>
+          <div class="unit-item editable"><strong>9부대 [최중요 기밀 · 특수 종결]</strong><br>조직 내 극소수만 아는 최상위 기밀 사건 및 제국 존립 직결 임무를 단독 종결합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [조직 시점 전용 2] 조직 전용 단말기 & 적대 세력 파일 -->
+    <section class="org-only">
+      <h2 class="editable">📟 조직 전용 단말기 OS &amp; 적대 세력 보고서</h2>
+      <div class="device-tabs">
+        <button class="device-tab active" onclick="switchDeviceTab('codex', this)">[프로그램 01] 생태·현상 도감</button>
+        <button class="device-tab" onclick="switchDeviceTab('scanner', this)">[프로그램 02] 단말기 핵심 기능</button>
+        <button class="device-tab" onclick="switchDeviceTab('enemy', this)">[적대 세력] 베일을 찢는 자들</button>
+      </div>
+
+      <div class="device-screen">
+        <div id="tab-codex" class="tab-panel editable">
+          <p><strong>[도감 #001] 숏 트리 (Short Tree) — 정상 개체</strong><br>
+          • 서식지: 숲띠 전역 / 위험도: 안전(Safe)<br>
+          • 특징: 성인 허리 높이의 관목. 추출 수액은 신경 안정 효과가 있어 남부 마을 카페 '숏 트리 샤벳'의 원료로 쓰이며, 시민들의 정서를 안정시켜 결계(베일) 유지에 기여합니다.</p>
+          <p style="margin-bottom:0; color:#FF7B7B;"><strong>[도감 #002] 변이 숏 트리 (Crimson Short Tree) — 오염 개체</strong><br>
+          • 원인: 극단적 감정 폭주 또는 적대 세력의 인위적 오염<br>
+          • 특징: 잎맥이 붉게 변하며 주변 결계(베일)의 마력을 흡수합니다. 발견 즉시 2부대 채집 후 8부대 정화 봉인이 필요합니다.</p>
+        </div>
+
+        <div id="tab-scanner" class="tab-panel editable" style="display:none;">
+          <p><strong>[조직 전용 단말기 사양서]</strong><br>
+          • <strong>위장 모드:</strong> 평소에는 평범한 얇은 유리 수첩으로 보이며, 등록된 요원의 마력 파장이 닿아야만 기동됩니다.<br>
+          • <strong>실시간 도감 &amp; 스캐너:</strong> 현장의 식물·잔류물을 스캔하면 5부대 데이터베이스와 즉시 대조하며, 육안에 보이지 않는 베일 균열을 붉은 파장으로 표시합니다.<br>
+          • <strong>라인 직통망 &amp; 검문 회피:</strong> 1~3부대 → 4~6부대 → 7~9부대로 작전 데이터를 실시간 전송하며, 제국군(감시병) 불시 검문 시 시민용 상업 허가증 화면으로 위장합니다.</p>
+        </div>
+
+        <div id="tab-enemy" class="tab-panel editable" style="display:none;">
+          <p style="color:#FF6B6B;"><strong>[위협 등급: HIGH] 적대 세력 — '베일을 찢는 자들'</strong></p>
+          <p>• <strong>사상 및 목적:</strong> 베일드 제국의 평화를 '신과 관리자들에게 사육당하는 가짜 온실'이라 규정하는 반체제 해방주의 집단. 결계(베일)를 파괴해 통제 없는 날것의 자유를 되찾으려 합니다.<br>
+          • <strong>주요 수법:</strong> 감시가 느슨한 해변가 외곽과 숲띠에 침투해 숏 트리를 고의로 변이시키거나, 시민들 사이에 불안을 퍼뜨려 베일에 균열을 냅니다.</p>
         </div>
       </div>
     </section>
@@ -613,8 +789,8 @@
   <div id="admin-modal">
     <div class="terminal-box">
       <div style="font-size:18px; margin-bottom:8px;">[RESTRICTED SYSTEM]</div>
-      <div style="font-size:13px; color:#88FFAA;">OVERRIDE PASSWORD REQUIRED</div>
-      <input type="password" id="admin-pass" placeholder="ENTER CODE...">
+      <div style="font-size:13px; color:#88FFAA;">NAMIN &amp; ORGANIZATION OVERRIDE</div>
+      <input type="password" id="admin-pass" placeholder="ENTER ACCESS KEY..." onkeyup="if(event.key==='Enter') checkAdminPass()">
       <div id="admin-error" style="color:#FF4D4D; font-size:13px; min-height:18px;"></div>
       <button class="terminal-btn" onclick="checkAdminPass()">ACCESS</button>
       <button class="terminal-btn" style="background:#333; color:#FFF;" onclick="closeAdminModal()">CANCEL</button>
@@ -624,16 +800,23 @@
   <!-- ACCESS GRANTED 연출 화면 -->
   <div id="granted-overlay">
     <div class="granted-title">ACCESS GRANTED</div>
-    <p style="margin-top:20px; letter-spacing:2px;">INITIALIZING LIVE ARCHIVE EDITOR...</p>
+    <p style="margin-top:20px; letter-spacing:2px;">SWITCHING TO ORGANIZATION &amp; NAMIN PERSPECTIVE...</p>
   </div>
 
   <script>
-    function showLocation(e, title, desc) {
+    let currentPerspective = 'citizen'; // 'citizen' 또는 'org'
+    let isHackerMode = false;
+
+    // 1. 원형 지도 클릭 (현재 시점에 맞는 설명 출력)
+    function showLocation(e, el) {
       e.stopPropagation();
+      const title = currentPerspective === 'org' ? el.dataset.titleOrg : el.dataset.titleCitizen;
+      const desc = currentPerspective === 'org' ? el.dataset.descOrg : el.dataset.descCitizen;
       document.getElementById('loc-title').innerText = title;
       document.getElementById('loc-desc').innerText = desc;
     }
 
+    // 2. 등장인물 필터
     function filterChars(group, clickedBtn) {
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       clickedBtn.classList.add('active');
@@ -643,27 +826,47 @@
       });
     }
 
-    function unlockSecretDoc() {
-      const input = document.getElementById('doc-code').value.trim();
-      const errorBox = document.getElementById('doc-error');
-      const terminal = document.getElementById('secret-box');
+    // 3. 단말기 OS 탭 전환
+    function switchDeviceTab(tabName, clickedBtn) {
+      document.querySelectorAll('.device-tab').forEach(btn => btn.classList.remove('active'));
+      clickedBtn.classList.add('active');
 
-      if (input === '나필레리아') {
-        errorBox.style.color = '#84A59D';
-        errorBox.innerText = '✔ 인증 완료: 1급 기밀 기록의 베일이 걷혔습니다.';
-        document.getElementById('secret-text').style.display = 'block';
-      } else {
-        errorBox.style.color = '#FF6B6B';
-        errorBox.innerText = '✖ [접근 거부] 일치하지 않는 보안 코드입니다.';
-        terminal.classList.remove('shake');
-        void terminal.offsetWidth;
-        terminal.classList.add('shake');
+      document.querySelectorAll('.tab-panel').forEach(panel => panel.style.display = 'none');
+      document.getElementById('tab-' + tabName).style.display = 'block';
+    }
+
+    // 4. 시점 텍스트 일괄 전환 함수
+    function applyPerspective(mode) {
+      currentPerspective = mode;
+      document.querySelectorAll('.dual').forEach(el => {
+        el.innerHTML = el.dataset[mode];
+      });
+
+      const switchBtn = document.getElementById('view-switch-btn');
+      if (switchBtn) {
+        switchBtn.innerText = mode === 'org' ? '시점 전환 (현재: 조직 기밀)' : '시점 전환 (현재: 시민 표면)';
       }
     }
 
+    // 편집 모드 중에도 시민 시점 / 조직 시점을 오가며 수정할 수 있게 하는 버튼
+    function togglePerspectiveInEditor() {
+      const nextMode = currentPerspective === 'org' ? 'citizen' : 'org';
+      applyPerspective(nextMode);
+    }
+
+    // 사용자가 글자를 수정할 때마다 data-citizen / data-org 속성에 자동 동기화
+    document.addEventListener('input', function(e) {
+      if (e.target.classList && e.target.classList.contains('dual')) {
+        e.target.dataset[currentPerspective] = e.target.innerHTML;
+      }
+    });
+
+    // 5. 숨겨진 글자('일') 클릭 시 모달 열기
     function openAdminModal() {
       document.getElementById('admin-modal').style.display = 'flex';
-      document.getElementById('admin-pass').value = '';
+      const input = document.getElementById('admin-pass');
+      input.value = '';
+      input.focus();
       document.getElementById('admin-error').innerText = '';
     }
 
@@ -671,6 +874,7 @@
       document.getElementById('admin-modal').style.display = 'none';
     }
 
+    // 6. 암호 확인 ('veiled') -> ACCESS GRANTED & 조직 시점 + 해킹 편집 모드 진입
     function checkAdminPass() {
       const pass = document.getElementById('admin-pass').value.trim().toLowerCase();
       if (pass === 'veiled') {
@@ -680,9 +884,10 @@
 
         setTimeout(() => {
           overlay.style.display = 'none';
-          document.body.classList.add('hacker-mode');
+          isHackerMode = true;
+          document.body.classList.add('hacker-mode', 'org-mode');
           document.getElementById('hacker-toolbar').style.display = 'flex';
-          document.getElementById('secret-text').style.display = 'block';
+          applyPerspective('org');
           startMatrix();
 
           document.querySelectorAll('.editable').forEach(el => {
@@ -694,27 +899,36 @@
       }
     }
 
+    // 7. 수정된 코드 복사 (기본 방문 시엔 시민 시점으로 열리도록 초기화하여 복사)
     function copyEditedCode() {
       const clone = document.documentElement.cloneNode(true);
-      clone.querySelector('body').classList.remove('hacker-mode');
+      clone.querySelector('body').classList.remove('hacker-mode', 'org-mode');
       clone.querySelector('#hacker-toolbar').style.display = 'none';
-      clone.querySelector('#secret-text').style.display = 'none';
       clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+
+      // 복제본은 항상 '시민 시점'이 기본 화면으로 보이도록 텍스트 복원 (조직 데이터는 data-org에 안전 보관됨)
+      clone.querySelectorAll('.dual').forEach(el => {
+        el.innerHTML = el.dataset.citizen;
+      });
 
       const fullHtml = '<!DOCTYPE html>\n' + clone.outerHTML;
       navigator.clipboard.writeText(fullHtml).then(() => {
-        alert('수정된 전체 HTML 코드가 클립보드에 복사되었습니다! 깃허브 index.html에 붙여넣으면 영구 저장됩니다.');
+        alert('수정된 전체 HTML 코드가 복사되었습니다! (방문자에겐 시민 시점으로 보이고, 일->veiled 입력 시 수정하신 조직 시점이 열립니다.)');
       });
     }
 
+    // 8. 해킹 모드 종료 (시민 시점으로 복귀)
     function exitHackerMode() {
-      document.body.classList.remove('hacker-mode');
+      isHackerMode = false;
+      document.body.classList.remove('hacker-mode', 'org-mode');
       document.getElementById('hacker-toolbar').style.display = 'none';
+      applyPerspective('citizen');
       document.querySelectorAll('.editable').forEach(el => {
         el.removeAttribute('contenteditable');
       });
     }
 
+    // 9. 매트릭스 배경 애니메이션
     let matrixInterval;
     function startMatrix() {
       const canvas = document.getElementById('matrix-canvas');
@@ -722,7 +936,7 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
-      const letters = 'VEILED0123456789RUNE@#%&*';
+      const letters = 'VEILED0123456789RUNE1A12B53A9@#%';
       const fontSize = 14;
       const columns = canvas.width / fontSize;
       const drops = Array(Math.floor(columns)).fill(1);
