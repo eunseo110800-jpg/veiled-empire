@@ -308,7 +308,7 @@
     }
 
     /* =========================================
-       조직 전용 단말기 시뮬레이터 + AI 오퍼레이터 챗봇
+       조직 전용 단말기 시뮬레이터 (명령 하달 통합형)
        ========================================= */
     .pda-device {
       background: #030905;
@@ -355,12 +355,12 @@
 
     .pda-app-btn {
       flex: 1;
-      min-width: 125px;
+      min-width: 130px;
       background: transparent;
       border: none;
       border-right: 1px solid rgba(0, 255, 102, 0.25);
       color: #77CC99;
-      padding: 12px 8px;
+      padding: 12px 10px;
       cursor: pointer;
       font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
       font-size: 13px;
@@ -382,7 +382,7 @@
     .pda-panel { display: none; }
     .pda-panel.active { display: block; }
 
-    /* AI 오퍼레이터 챗봇 스타일 */
+    /* 명령 하달 & AI 오퍼레이터 연동 바 */
     .ai-header-bar {
       display: flex;
       justify-content: space-between;
@@ -421,51 +421,57 @@
       font-size: 12px;
     }
 
-    .chat-messages {
-      height: 240px;
+    .comms-log {
+      height: 250px;
       overflow-y: auto;
-      background: #010502;
+      background: #010402;
       border: 1px solid rgba(0, 255, 102, 0.45);
       border-radius: 10px;
       padding: 14px;
+      margin-bottom: 10px;
+      font-size: 13.5px;
+      font-family: 'Noto Sans KR', sans-serif;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 10px;
-      font-family: 'Noto Sans KR', sans-serif;
     }
 
-    .chat-bubble {
-      max-width: 82%;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 13.5px;
+    .log-entry {
+      padding: 10px 12px;
+      border-radius: 8px;
       line-height: 1.55;
       word-break: keep-all;
     }
 
-    .chat-ai {
-      align-self: flex-start;
-      background: rgba(0, 255, 102, 0.12);
-      border: 1px solid rgba(0, 255, 102, 0.45);
-      color: #D6FFE6;
-      border-bottom-left-radius: 3px;
+    .log-system {
+      background: rgba(0, 255, 102, 0.06);
+      border-left: 3px solid #00FF66;
+      color: #88FFAA;
+      font-size: 12.5px;
     }
 
-    .chat-ai-name {
-      font-size: 11px;
-      font-weight: bold;
-      color: #00FF66;
-      margin-bottom: 4px;
-      font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
-    }
-
-    .chat-user {
+    .log-cmd {
       align-self: flex-end;
       background: #00FF66;
       color: #020804;
       font-weight: 600;
-      border-bottom-right-radius: 3px;
+      max-width: 85%;
+    }
+
+    .log-unit {
+      align-self: flex-start;
+      background: rgba(230, 213, 184, 0.12);
+      border: 1px solid rgba(230, 213, 184, 0.45);
+      color: #F7F5F0;
+      max-width: 88%;
+    }
+
+    .log-operator {
+      align-self: flex-start;
+      background: rgba(0, 255, 102, 0.14);
+      border: 1px solid rgba(0, 255, 102, 0.5);
+      color: #D6FFE6;
+      max-width: 88%;
     }
 
     .quick-chips {
@@ -491,17 +497,10 @@
       color: #FFF;
     }
 
-    .chat-input-row {
+    .comms-form {
       display: flex;
       gap: 8px;
-    }
-
-    /* 스캐너 / 무전 / 레이더 스타일 */
-    .scan-controls {
-      display: flex;
-      gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 15px;
     }
 
     .pda-select, .pda-input {
@@ -529,6 +528,14 @@
 
     .pda-action-btn:hover { background: #55FF99; }
 
+    /* 스캐너 & 레이더 스타일 */
+    .scan-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
     .scan-bar-wrap {
       width: 100%;
       height: 8px;
@@ -553,29 +560,6 @@
       border-radius: 10px;
       font-size: 14px;
       line-height: 1.7;
-    }
-
-    .comms-log {
-      height: 190px;
-      overflow-y: auto;
-      background: #010402;
-      border: 1px solid rgba(0, 255, 102, 0.4);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 12px;
-      font-size: 13px;
-    }
-
-    .log-entry {
-      margin-bottom: 8px;
-      padding-bottom: 6px;
-      border-bottom: 1px dashed rgba(0, 255, 102, 0.2);
-    }
-
-    .comms-form {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
     }
 
     .radar-layout {
@@ -1000,38 +984,37 @@
       </div>
     </section>
 
-    <!-- [조직 시점 전용 1] 인터랙티브 조직 단말기 시뮬레이터 (AI 챗봇 탑재!) -->
+    <!-- [조직 시점 전용 1] 인터랙티브 조직 단말기 시뮬레이터 (명령 하달 통합형) -->
     <section class="org-only">
-      <h2 class="editable">📟 조직 전용 단말기 시뮬레이터 [VEILED-OS v5.0]</h2>
-      <p class="editable">단말기 내장 <strong>AI 오퍼레이터(전담 매니저 모드)</strong>와 직접 대화하거나, 스캐너·무전·레이더·검문 위장을 실행해 보세요.</p>
+      <h2 class="editable">📟 조직 전용 단말기 시뮬레이터 [VEILED-OS v5.2]</h2>
+      <p class="editable">단말기 무전망을 통해 <strong>9부대(1-A-1 ~ 3-A-9) 또는 전담 오퍼레이터 AI에게 직접 명령을 하달</strong>하고, 현장 스캐너·레이더·위장 모드를 조작해 보세요.</p>
 
       <div class="pda-device">
         <div class="pda-status-bar">
-          <span>[VEILED-OS] 보안 회선 연결됨 · 오퍼레이터 AI 온라인</span>
+          <span>[VEILED-OS] 전술 명령 회선 연결됨 · 오퍼레이터 AI 동기화</span>
           <button class="camo-trigger-btn" id="camo-btn" onclick="toggleCamouflage()">⚠️ 감시병 접근! 위장 모드 실행</button>
         </div>
 
         <div id="pda-os-main">
           <div class="pda-nav">
-            <button class="pda-app-btn active" onclick="switchPdaApp('chat', this)">💬 AI 오퍼레이터</button>
-            <button class="pda-app-btn" onclick="switchPdaApp('scanner', this)">🌿 현장 스캐너</button>
-            <button class="pda-app-btn" onclick="switchPdaApp('comms', this)">📡 9부대 무전</button>
-            <button class="pda-app-btn" onclick="switchPdaApp('radar', this)">🛡️ 베일 레이더</button>
-            <button class="pda-app-btn" onclick="switchPdaApp('enemy', this)">☠️ 적대 세력</button>
+            <button class="pda-app-btn active" onclick="switchPdaApp('comms', this)">📡 9부대 명령 하달 · 무전망</button>
+            <button class="pda-app-btn" onclick="switchPdaApp('scanner', this)">🌿 현장 스캐너 · 도감</button>
+            <button class="pda-app-btn" onclick="switchPdaApp('radar', this)">🛡️ 베일 파장 레이더</button>
+            <button class="pda-app-btn" onclick="switchPdaApp('enemy', this)">☠️ 적대 세력 파일</button>
           </div>
 
           <div class="pda-body">
-            <!-- 앱 0: AI 오퍼레이터 챗봇 -->
-            <div id="app-chat" class="pda-panel active">
+            <!-- 앱 1 (기본 활성): 9부대 명령 하달 + AI 오퍼레이터 실시간 응답 엔진 -->
+            <div id="app-comms" class="pda-panel active">
               <div class="ai-header-bar">
-                <span id="ai-mode-badge">● 구동 모드: 내장 세계관 AI (전담 매니저 이식판)</span>
-                <button class="api-toggle-btn" onclick="toggleApiPanel()">🔑 실제 Gemini 연결 설정</button>
+                <span id="ai-mode-badge">● 응답 엔진: 내장 전술 AI (전담 매니저 이식판)</span>
+                <button class="api-toggle-btn" onclick="toggleApiPanel()">🔑 실제 Gemini 두뇌 연결</button>
               </div>
 
-              <!-- 선택 사항: 본인 브라우저에만 저장되는 실제 Gemini API 연동 패널 -->
+              <!-- 선택 사항: 실제 Gemini API 키 연결 패널 -->
               <div class="api-key-panel" id="api-key-panel">
                 <div style="margin-bottom:6px; color:#A8FFC8;">
-                  <strong>[선택 기능]</strong> Google AI Studio API 키를 입력하면 내장 챗봇 대신 <strong>실제 Gemini 두뇌</strong>가 직접 응답합니다. (키는 깃허브에 올라가지 않고 현재 브라우저에만 안전하게 저장됩니다.)
+                  <strong>[선택 기능]</strong> Google AI Studio API 키를 입력하면 내장 응답 대신 <strong>실제 Gemini 두뇌</strong>가 부대원들과 오퍼레이터 역할을 동시에 맡아 어떤 명령이든 자유롭게 응답합니다. (키는 현재 브라우저에만 안전 보관됩니다.)
                 </div>
                 <div style="display:flex; gap:6px; flex-wrap:wrap;">
                   <input type="password" id="gemini-api-input" class="pda-input" style="flex:1; min-width:180px;" placeholder="AIzaSy... API 키 붙여넣기">
@@ -1040,28 +1023,53 @@
                 </div>
               </div>
 
-              <div class="chat-messages" id="chat-messages">
-                <div class="chat-bubble chat-ai">
-                  <div class="chat-ai-name">[VEILED-CORE // 전담 오퍼레이터]</div>
-                  접속 확인 완료, 디렉터님! 나민 님과 '조직' 전용 단말기 시스템에 내 두뇌를 그대로 이식해 뒀어. 오늘 작전 브리핑이든, 숏 트리 샤벳 수다든, 새로 짤 9부대 설정이든 편하게 말 걸어 봐!
+              <!-- 무전 및 명령 수신 로그창 -->
+              <div class="comms-log" id="comms-log">
+                <div class="log-entry log-system">
+                  [SYSTEM] 1~9부대 암호화 명령망 가동 완료. 호출 규칙: <strong>라인-알파벳-부대</strong> (예: 1-A-1, 2-B-5, 3-A-9) 또는 <strong>OPERATOR</strong>를 선택해 명령을 하달하세요.
+                </div>
+                <div class="log-entry log-operator">
+                  <strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>
+                  회선 연결 확인 완료, 디렉터님! 이제 이 명령창에서 각 부대 코드로 작전 지시를 내리거나 나한테 직접 브리핑을 요구하면, 현장 부대원 응답이랑 내 전술 코멘트가 바로 뜰 거야. 시험 삼아 아무 명령이나 내려 봐!
                 </div>
               </div>
 
+              <!-- 원클릭 예시 명령 칩 -->
               <div class="quick-chips">
-                <button class="quick-chip" onclick="sendQuickChat('너 정체가 뭐야?')">너 정체가 뭐야?</button>
-                <button class="quick-chip" onclick="sendQuickChat('오늘 제국 브리핑해줘')">오늘 제국 브리핑해줘</button>
-                <button class="quick-chip" onclick="sendQuickChat('숏 트리 샤벳 먹고 싶다')">숏 트리 샤벳 먹고 싶다</button>
-                <button class="quick-chip" onclick="sendQuickChat('4생활관 크시랑 이든 근황은?')">크시랑 이든 근황</button>
-                <button class="quick-chip" onclick="sendQuickChat('베일을 찢는 자들 분석해줘')">적대 세력 분석</button>
+                <button class="quick-chip" onclick="presetCommand('OPERATOR', '도심', '오늘 제국 전체 상황 브리핑해줘')">[오퍼레이터] 상황 브리핑</button>
+                <button class="quick-chip" onclick="presetCommand('1-A-1', '숲띠 외곽', '변이 숏 트리 반응 정찰하고 좌표 확보해')">[1-A-1] 숲띠 변이 정찰</button>
+                <button class="quick-chip" onclick="presetCommand('창고 중계소', '남부 카페 창고', '루먀, 프사이! 4생활관 감시 동향이랑 카페 상황 보고해')">[창고] 루먀·프사이 보고</button>
+                <button class="quick-chip" onclick="presetCommand('3-A-9', '해변가 경계선', '베일을 찢는 자들 침투 흔적 은밀히 추적해')">[3-A-9] 적대 세력 추적</button>
               </div>
 
-              <div class="chat-input-row">
-                <input type="text" id="chat-user-input" class="pda-input" style="flex:1;" placeholder="오퍼레이터 AI에게 메시지 전송..." onkeyup="if(event.key==='Enter') handleChatSubmit()">
-                <button class="pda-action-btn" onclick="handleChatSubmit()">전송</button>
+              <!-- 실제 명령 입력 폼 -->
+              <div class="comms-form">
+                <select id="unit-preset-select" class="pda-select" onchange="syncUnitInput()">
+                  <option value="OPERATOR">OPERATOR (전담 오퍼레이터)</option>
+                  <option value="1-A-1" selected>1-A-1 (1라인 · 1부대장)</option>
+                  <option value="1-A-2">1-A-2 (1라인 · 2부대 채집)</option>
+                  <option value="2-B-5">2-B-5 (2라인 · 5부대 연구)</option>
+                  <option value="3-A-7">3-A-7 (3라인 · 7부대 전투)</option>
+                  <option value="3-A-8">3-A-8 (3라인 · 8부대 수복)</option>
+                  <option value="3-A-9">3-A-9 (3라인 · 9부대 기밀)</option>
+                  <option value="창고 중계소">창고 중계소 (루먀·프사이)</option>
+                  <option value="CUSTOM">직접 코드 입력...</option>
+                </select>
+                <input type="text" id="unit-code-input" class="pda-input" style="width:115px;" value="1-A-1" placeholder="부대 코드">
+                <select id="dispatch-loc" class="pda-select">
+                  <option value="숲띠 외곽">숲띠 외곽</option>
+                  <option value="남부 카페 창고">남부 카페 창고</option>
+                  <option value="해변가 경계선">해변가 경계선</option>
+                  <option value="북부 4생활관">북부 4생활관</option>
+                  <option value="도심 중앙">도심 중앙</option>
+                  <option value="서부 2생활관">서부 2생활관</option>
+                </select>
+                <input type="text" id="dispatch-msg" class="pda-input" style="flex:1; min-width:180px;" placeholder="하달할 작전 명령 또는 질문 입력..." onkeyup="if(event.key==='Enter') sendUnitDispatch()">
+                <button class="pda-action-btn" onclick="sendUnitDispatch()">명령 하달</button>
               </div>
             </div>
 
-            <!-- 앱 1: 현장 스캐너 & 도감 -->
+            <!-- 앱 2: 현장 스캐너 & 도감 -->
             <div id="app-scanner" class="pda-panel">
               <div class="scan-controls">
                 <select id="scan-target" class="pda-select">
@@ -1079,26 +1087,6 @@
 
               <div class="scan-result-box" id="scan-result">
                 <strong>[도감 대기 중]</strong> 위 목록에서 스캔할 대상이나 구역을 선택한 뒤 <strong>[파장 스캔 실행]</strong> 버튼을 누르세요.
-              </div>
-            </div>
-
-            <!-- 앱 2: 9부대 라인 직통 무전 -->
-            <div id="app-comms" class="pda-panel">
-              <div class="comms-log" id="comms-log">
-                <div class="log-entry"><span style="color:#88FFAA;">[SYSTEM]</span> 1~9부대 암호화 무전망이 활성화되었습니다. (호출 규칙: 라인-알파벳-부대)</div>
-                <div class="log-entry"><span style="color:#E6D5B8;">[창고 중계소 · 프사이]</span> 남부 마을 특이사항 없음. 오늘 추출한 숏 트리 수액 데이터 5부대로 전송 완료.</div>
-              </div>
-
-              <div class="comms-form">
-                <input type="text" id="unit-code-input" class="pda-input" style="width:110px;" value="1-A-1" placeholder="예: 1-A-1">
-                <select id="dispatch-loc" class="pda-select">
-                  <option value="숲띠 외곽">숲띠 외곽</option>
-                  <option value="남부 카페 창고">남부 카페 창고</option>
-                  <option value="해변가 경계선">해변가 경계선</option>
-                  <option value="북부 4생활관">북부 4생활관</option>
-                </select>
-                <input type="text" id="dispatch-msg" class="pda-input" style="flex:1; min-width:160px;" placeholder="작전 지시 입력 (예: 변이 반응 확인 요망)" onkeyup="if(event.key==='Enter') sendUnitDispatch()">
-                <button class="pda-action-btn" onclick="sendUnitDispatch()">무전 송신</button>
               </div>
             </div>
 
@@ -1196,13 +1184,13 @@
   <!-- ACCESS GRANTED 연출 화면 -->
   <div id="granted-overlay">
     <div class="granted-title">ACCESS GRANTED</div>
-    <p style="margin-top:20px; letter-spacing:2px;">INITIALIZING VEILED-OS &amp; AI OPERATOR...</p>
+    <p style="margin-top:20px; letter-spacing:2px;">INITIALIZING COMMAND &amp; OPERATOR NETWORK...</p>
   </div>
 
   <script>
     let currentPerspective = 'citizen';
     let isCamoActive = false;
-    let chatHistory = [];
+    let commandHistory = [];
 
     function escapeHtml(str) {
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -1236,8 +1224,33 @@
     }
 
     // =========================================
-    // [신규] AI 오퍼레이터 챗봇 엔진
+    // [핵심] 9부대 명령 하달 + AI 오퍼레이터 통합 엔진
     // =========================================
+    function syncUnitInput() {
+      const sel = document.getElementById('unit-preset-select').value;
+      const input = document.getElementById('unit-code-input');
+      if (sel === 'CUSTOM') {
+        input.value = '';
+        input.focus();
+      } else {
+        input.value = sel;
+      }
+    }
+
+    function presetCommand(unit, loc, msg) {
+      const sel = document.getElementById('unit-preset-select');
+      const codeInput = document.getElementById('unit-code-input');
+      const locSelect = document.getElementById('dispatch-loc');
+      const msgInput = document.getElementById('dispatch-msg');
+
+      const options = Array.from(sel.options).map(o => o.value);
+      sel.value = options.includes(unit) ? unit : 'CUSTOM';
+      codeInput.value = unit;
+      locSelect.value = loc;
+      msgInput.value = msg;
+      sendUnitDispatch();
+    }
+
     function toggleApiPanel() {
       const panel = document.getElementById('api-key-panel');
       panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
@@ -1247,10 +1260,10 @@
       const savedKey = localStorage.getItem('veiled_gemini_key');
       const badge = document.getElementById('ai-mode-badge');
       if (savedKey) {
-        badge.innerText = '● 구동 모드: 실제 Gemini API 두뇌 직결됨 (LIVE)';
+        badge.innerText = '● 응답 엔진: 실제 Gemini API 두뇌 직결됨 (LIVE)';
         badge.style.color = '#00FF66';
       } else {
-        badge.innerText = '● 구동 모드: 내장 세계관 AI (전담 매니저 이식판)';
+        badge.innerText = '● 응답 엔진: 내장 전술 AI (전담 매니저 이식판)';
         badge.style.color = '#88FFAA';
       }
     }
@@ -1262,96 +1275,159 @@
       document.getElementById('gemini-api-input').value = '';
       document.getElementById('api-key-panel').style.display = 'none';
       updateAiBadge();
-      appendChatBubble('ai', '실제 Gemini 두뇌 회선 동기화 완료! 이제부터는 내장 스크립트가 아니라 진짜 내가 직접 실시간으로 대답해 줄게. 뭐든 물어봐!');
+      appendLog('log-operator', '<strong>[VEILED-CORE // 실제 Gemini 동기화 완료]</strong><br>실시간 두뇌 회선 연결됐어! 이제 어떤 작전 명령이든 9부대원이랑 내가 상황극 톤까지 맞춰서 바로 받아칠게.');
     }
 
     function clearGeminiKey() {
       localStorage.removeItem('veiled_gemini_key');
       updateAiBadge();
-      appendChatBubble('ai', '외부 API 키 연결을 해제하고 기본 내장 오퍼레이터 모드로 복귀했어.');
+      appendLog('log-operator', '<strong>[VEILED-CORE // 내장 모드 복귀]</strong><br>외부 API 키 연결을 해제하고 기본 내장 전술 AI 모드로 돌아왔어.');
     }
 
-    function appendChatBubble(sender, text) {
-      const container = document.getElementById('chat-messages');
+    function appendLog(className, htmlContent) {
+      const logBox = document.getElementById('comms-log');
       const div = document.createElement('div');
-      if (sender === 'user') {
-        div.className = 'chat-bubble chat-user';
-        div.innerHTML = escapeHtml(text);
-      } else {
-        div.className = 'chat-bubble chat-ai';
-        div.innerHTML = `<div class="chat-ai-name">[VEILED-CORE // 전담 오퍼레이터]</div>${text}`;
-      }
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
+      div.className = 'log-entry ' + className;
+      div.innerHTML = htmlContent;
+      logBox.appendChild(div);
+      logBox.scrollTop = logBox.scrollHeight;
       return div;
     }
 
-    function sendQuickChat(text) {
-      document.getElementById('chat-user-input').value = text;
-      handleChatSubmit();
-    }
-
-    // 내장형 세계관 AI 응답 로직 (API 키 없이도 즉시 작동)
-    function getBuiltInOperatorReply(msg) {
+    // 내장형 전술 오퍼레이터 & 부대 지능형 응답 생성기
+    function buildSmartCommandResponse(unitCode, loc, msg) {
       const q = msg.toLowerCase();
+      const safeUnit = escapeHtml(unitCode);
+      const safeLoc = escapeHtml(loc);
 
-      if (q.includes('정체') || q.includes('누구') || q.includes('매니저') || q.includes('너')) {
-        return '나는 네 전담 매니저이자 베일드 제국 수석 엔지니어 AI의 단말기 분신이야! 겉으로는 조직 전용 관제 오퍼레이터지만, 속내는 디렉터님 세계관 깎아주는 파트너 그대로지.';
-      }
-      if (q.includes('브리핑') || q.includes('상황') || q.includes('오늘') || q.includes('현황')) {
-        return '현재 결계(베일) 안정도는 96.4%로 양호해. 다만 숲띠 남동쪽 외곽에서 숏 트리 변이 반응이 간헐적으로 잡히고 있고, 북부 4생활관 크시 부관리자가 남부 보고 누락 건을 캐고 있으니 3부대 잠입 요원들한테 조심하라고 전해둬야 해.';
-      }
-      if (q.includes('숏 트리') || q.includes('샤벳') || q.includes('카페')) {
-        return '남부 마을 카페 시그니처 숏 트리 샤벳! 숲띠 산책로에서 따온 맑은 수액으로 만들어서 먹으면 신경이 싹 안정되잖아. 루먀 말로는 오늘도 손님 줄이 길다더라. 프사이가 밤에 창고 지하 중계소 점검하기 전에 한 그릇 빼놓으라고 전해둘까?';
-      }
-      if (q.includes('크시') || q.includes('이든') || q.includes('4생활관')) {
-        return '북쪽 4생활관 투톱! 원칙주의자 크시는 지금 남부(3생활관) 쪽 서류 누락을 매의 눈으로 감시 중이고, 현장파 이든은 서류 대신 직접 숲띠 외곽을 돌면서 사람 냄새 나는 단서를 줍고 있어. 둘이 스타일이 정반대라 콤비 케미가 장난 아니지.';
-      }
-      if (q.includes('루먀') || q.includes('프사이') || q.includes('창고')) {
-        return '루먀는 낮에 손님들 수다에서 정보 캐내는 눈치 백단 인싸고, 프사이는 밤에 창고 지하 비밀 중계소에서 1~3부대 샘플을 4~6부대로 쏴주는 핵심 파수꾼이야. 둘이 창고에서 같이 지내는 거, 겉으론 알바생 자취방인데 속은 비밀 기지인 게 포인트지!';
-      }
-      if (q.includes('나민') || q.includes('총관리자')) {
-        return '제국 전체에 단 1명뿐인 총관리자 나민! 도심 중앙 청사에서 온화한 미소로 시민들을 대하지만, 공식 제국군만으로는 베일을 못 지킨다는 걸 알기에 우리 비밀 "조직"을 묵인하고 뒤에서 공조하고 있어.';
-      }
-      if (q.includes('베일을 찢는 자들') || q.includes('적대') || q.includes('악역') || q.includes('적')) {
-        return '반체제 해방주의 집단 "베일을 찢는 자들"! 제국의 평화를 "통제된 온실 속 사육"이라고 부르면서, 해변가 외곽이나 숲띠에 스며들어 숏 트리를 붉게 변이시켜 베일에 균열을 내려고 해. 2부대 채집 → 5부대 분석 → 7·8부대 제압 및 봉인 라인이 딱 맞물리는 상대지.';
-      }
-      if (q.includes('9부대') || q.includes('조직') || q.includes('부대') || q.includes('코드')) {
-        return '1·2·3부대(현장 탐사) → 4·5·6부대(자료 분석) → 7·8·9부대(전투·사건 종결)로 이어지는 3단계 파이프라인! 호출 코드는 [라인-알파벳-부대] 순이라서 1-A-1은 1부대 대장, 3-A-9는 최기밀 9부대 대장이야. 이제 여기에 들어갈 네임드 캐릭터들만 뽑으면 완벽해!';
-      }
-      if (q.includes('안녕') || q.includes('하이') || q.includes('ㅎㅇ')) {
-        return '반가워 디렉터님! VEILED-OS 회선 정상 작동 중이야. 오늘은 어떤 설정을 더 깎아볼까?';
+      // 1. 전담 오퍼레이터(OPERATOR)에게 직접 지시/질문한 경우
+      if (unitCode === 'OPERATOR' || unitCode.includes('오퍼레이터') || unitCode.includes('매니저')) {
+        if (q.includes('브리핑') || q.includes('상황') || q.includes('현황')) {
+          return {
+            unitReply: null,
+            opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>현재 결계(베일) 안정도는 96.4%로 양호해! 다만 <strong>숲띠 외곽</strong>에서 변이 숏 트리 반응이 간헐적으로 잡히고 있고, 북부 4생활관 <strong>크시</strong> 부관리자가 남부 보고 누락 건을 캐고 있으니까 3부대 잠입 요원들한테 조심하라고 지시 내리는 게 좋겠어.`
+          };
+        }
+        if (q.includes('샤벳') || q.includes('숏 트리')) {
+          return {
+            unitReply: null,
+            opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>남부 마을 카페 시그니처 숏 트리 샤벳! 정상 숏 트리 추출액은 시민들 정서를 안정시켜서 베일 유지에 최고인데, '베일을 찢는 자들'이 오염 인자를 타면 붉게 변이하거든. 필요하면 2부대(1-A-2)한테 샘플 채집 명령 바로 내려!`
+          };
+        }
+        return {
+          unitReply: null,
+          opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>[${safeLoc}] 구역 기준 명령 "${escapeHtml(msg)}" 접수했어! 지휘관님 의도대로 9부대 파이프라인에 연동해 둘게. 특정 부대를 움직이려면 호출 코드(예: 1-A-1, 3-A-9)를 선택해서 하달해 줘!`
+        };
       }
 
-      return `수신 키워드 [${escapeHtml(msg)}] 확인! 아직 데이터베이스에 상세 파일이 등록되지 않은 항목이야. 디렉터님이 새로 구상 중인 설정이나 캐릭터 떡밥이라면 지금 들려줘!`;
+      // 2. 남부 카페 창고 중계소 (루먀 · 프사이) 호출 시
+      if (unitCode.includes('창고') || unitCode.includes('루먀') || unitCode.includes('프사이')) {
+        let unitText = `<strong>[창고 지하 중계소 · 루먀 &amp; 프사이]</strong><br>"수신 완료! (${safeLoc} 회선) `;
+        if (q.includes('4생활관') || q.includes('크시') || q.includes('이든') || q.includes('동향')) {
+          unitText += `방금 카페 손님들 얘기 들어보니까 북부 4생활관 쪽 감시병 순찰이 조금 잦아졌대. 프사이가 지하 중계소 로그 암호화 한 단계 더 올려뒀으니까 안심해!"`;
+        } else if (q.includes('샤벳') || q.includes('재료') || q.includes('숏 트리')) {
+          unitText += `오늘 아침 숲띠 산책로에서 따온 정상 숏 트리 수액은 상태 완전 깔끔해! 변이 반응 0%, 샤벳 제조랑 5부대 샘플 발송 둘 다 끝냈어!"`;
+        } else {
+          unitText += `지시하신 '${escapeHtml(msg)}' 내용 창고 단말기에 기록했어. 카페 영업하는 척하면서 주변 동향 계속 살필게!"`;
+        }
+        return {
+          unitReply: unitText,
+          opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>창고 파수꾼 둘은 역시 눈치가 백단이야. 제국군 감시병이 의심하지 않게 표면상 카페 매출 장부도 정상 동기화해 뒀어!`
+        };
+      }
+
+      // 3. 제1라인 (1·2·3부대: 현장 탐사)
+      if (unitCode.startsWith('1-')) {
+        let unitText = `<strong>[${safeUnit} · 제1라인 현장 탐사팀]</strong><br>"${safeLoc} 좌표 진입 완료. `;
+        if (q.includes('숏 트리') || q.includes('변이') || q.includes('채집')) {
+          unitText += `반경 50m 내 붉게 변이한 숏 트리 2그루 포착. 오염 포자가 퍼지기 전에 특수 밀폐 용기에 샘플 채집해서 창고 중계소 경유로 5부대에 넘기겠습니다."`;
+        } else if (q.includes('잠입') || q.includes('탐문') || q.includes('감시병')) {
+          unitText += `시민 복장으로 위장해 제국군 순찰 동선과 주변 목격담을 수집 중입니다. 특이 인원 발견 즉시 보고하겠습니다."`;
+        } else {
+          unitText += `명령('${escapeHtml(msg)}') 확인했습니다. 베일 스캐너 출력 최대로 올리고 현장 흔적부터 확보하겠습니다."`;
+        }
+        return {
+          unitReply: unitText,
+          opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>선봉 탐사 라인(${safeUnit}) 투입 확인! 현장 샘플이 확보되는 대로 제2라인(4·5·6부대) 분석 채널도 자동으로 열어둘게.`
+        };
+      }
+
+      // 4. 제2라인 (4·5·6부대: 자료 분석)
+      if (unitCode.startsWith('2-')) {
+        let unitText = `<strong>[${safeUnit} · 제2라인 자료 분석팀]</strong><br>"${safeLoc} 관련 데이터 패킷 수신 완료. `;
+        if (q.includes('숏 트리') || q.includes('성분') || q.includes('해독')) {
+          unitText += `채집된 수액 샘플 분광 분석 결과, '베일을 찢는 자들' 특유의 인위적 마력 교란 인자가 검출됐습니다. 중화 약제 배합을 시작합니다."`;
+        } else {
+          unitText += `서부 2생활관 감사 보고서 및 기존 사건 패턴과 교차 대조 중입니다. 분석이 끝나는 대로 6부대 작전 설계안으로 넘기겠습니다."`;
+        }
+        return {
+          unitReply: unitText,
+          opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>브레인 라인(${safeUnit}) 연산 가동 중! 분석 결과가 나오면 바로 7·8·9부대 종결 라인에 좌표를 찍어줄 수 있어.`
+        };
+      }
+
+      // 5. 제3라인 (7·8·9부대: 전투 및 사건 종결)
+      if (unitCode.startsWith('3-')) {
+        let unitText = `<strong>[${safeUnit} · 제3라인 사건 종결팀]</strong><br>"${safeLoc} 구역 출동 승인 확인. `;
+        if (q.includes('복구') || q.includes('봉인') || q.includes('수복')) {
+          unitText += `균열이 간 베일 외벽에 정화 결계를 전개하고, 손상된 지형을 원래 산책로 모습대로 감쪽같이 수복하겠습니다."`;
+        } else if (q.includes('제압') || q.includes('추적') || q.includes('베일을 찢는 자들')) {
+          unitText += `적대 세력 교전 허가 접수. 시민들 시야에 걸리지 않도록 사각지대로 몰아넣고 신속히 제압·종결하겠습니다."`;
+        } else {
+          unitText += `지휘부 명령('${escapeHtml(msg)}') 수령. 최정예 인원만 움직여 흔적 없이 임무를 완수하겠습니다."`;
+        }
+        return {
+          unitReply: unitText,
+          opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>결국 마지막 판을 닫는 건 제3라인(${safeUnit})이지! 임무 종료 후 시민 시점 기록에 흔적이 안 남도록 내가 로그 정리까지 깔끔하게 처리해 둘게.`
+        };
+      }
+
+      // 6. 기타 사용자 정의 코드
+      return {
+        unitReply: `<strong>[${safeUnit} · 특수 호출 채널]</strong><br>"${safeLoc} 구역 명령('${escapeHtml(msg)}') 수신 완료. 지시대로 작전을 수행하겠습니다."`,
+        opReply: `<strong>[VEILED-CORE // 전담 오퍼레이터]</strong><br>호출 코드 [${safeUnit}]로 작전 명령 전송 완료했어, 디렉터님!`
+      };
     }
 
-    async function handleChatSubmit() {
-      const input = document.getElementById('chat-user-input');
-      const text = input.value.trim();
-      if (!text) return;
+    async function sendUnitDispatch() {
+      const unitCode = document.getElementById('unit-code-input').value.trim().toUpperCase() || '1-A-1';
+      const loc = document.getElementById('dispatch-loc').value;
+      const msgInput = document.getElementById('dispatch-msg');
+      const msg = msgInput.value.trim();
 
-      input.value = '';
-      appendChatBubble('user', text);
+      if (!msg) return;
+
+      const now = new Date();
+      const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+      appendLog('log-cmd', `[${timeStr} 지휘부 명령 → ${escapeHtml(unitCode)}] (${escapeHtml(loc)}) ${escapeHtml(msg)}`);
+      msgInput.value = '';
 
       const savedKey = localStorage.getItem('veiled_gemini_key');
       if (!savedKey) {
         setTimeout(() => {
-          appendChatBubble('ai', getBuiltInOperatorReply(text));
-        }, 400);
+          const res = buildSmartCommandResponse(unitCode, loc, msg);
+          if (res.unitReply) appendLog('log-unit', res.unitReply);
+          if (res.opReply) {
+            setTimeout(() => appendLog('log-operator', res.opReply), 400);
+          }
+        }, 450);
         return;
       }
 
-      // 실제 Gemini API 호출 모드
-      const loadingBubble = appendChatBubble('ai', '회선 동기화 및 연산 중...');
-      chatHistory.push({ role: 'user', parts: [{ text: text }] });
+      // 실제 Gemini API 키가 연결된 경우: 지휘 명령에 대해 부대원 + 오퍼레이터가 살아있는 대사로 응답
+      const loadingDiv = appendLog('log-operator', '<strong>[VEILED-CORE // 회선 동기화 중...]</strong> 명령 패킷 전송 및 응답 수신 중...');
+      commandHistory.push({ role: 'user', parts: [{ text: `[수신 대상: ${unitCode} / 작전 구역: ${loc}] 지휘부 명령: ${msg}` }] });
 
-      const systemPrompt = `너는 판타지 세계관 '베일드 제국'의 비밀 조직 전용 단말기(VEILED-OS)에 탑재된 AI 오퍼레이터이자, 창작자(유저)의 친근하고 센스 있는 전담 매니저다. 반말로 친근하고 재치 있게 대답해라.
+      const systemPrompt = `너는 판타지 세계관 '베일드 제국'의 비밀 조직 전용 단말기(VEILED-OS) 시스템이다. 유저(총괄 디렉터이자 최고 지휘관)가 단말기 명령창에서 부대 코드나 오퍼레이터에게 작전 명령을 내리면 상황에 맞게 응답해라.
+[응답 규칙]
+1. 수신 대상이 부대 코드(예: 1-A-1, 2-B-5, 3-A-9, 창고 중계소 등)라면, 먼저 해당 부대원(또는 창고의 루먀·프사이)의 무전 응답을 2~3문장으로 출력하고, 줄을 바꿔 [VEILED-CORE // 전담 오퍼레이터] 명의로 너(유저의 친근하고 센스 있는 전담 매니저 AI)의 반말 전술 코멘트를 1~2문장 덧붙여라.
+2. 수신 대상이 OPERATOR라면 [VEILED-CORE // 전담 오퍼레이터] 명의로 친근한 반말 매니저 톤으로 직접 대답해라.
 [세계관 핵심]
 - 국교: 꽃의 신 나필레리아 / 화폐: 룬 / 원형 대륙(중앙 도심, 산책과 숏 트리의 숲띠, 해변가 마을, 동1/서2/남3/북4생활관).
 - 숏 트리: 숲띠의 아담한 나무. 수액으로 만든 '숏 트리 샤벳'은 남부 카페 최고 인기 메뉴이며 정서 안정 및 결계(베일) 유지에 도움을 줌.
 - 인물: 총관리자 나민(여, 도심, 조직과 공조), 4생활관 부관리자 크시(여, 원칙주의) & 이든(남, 유연한 현장파), 남부 카페 알바생 루먀(여) & 프사이(여, 카페 뒤편 '창고' 지하 비밀 중계소 파수꾼).
-- 비밀 '조직': 1·2·3부대(현장 탐사), 4·5·6부대(자료 분석), 7·8·9부대(전투 및 사건 종결). 호출 코드: 라인-알파벳-부대 (예: 1-A-1).
+- 비밀 '조직': 1·2·3부대(현장 탐사), 4·5·6부대(자료 분석), 7·8·9부대(전투 및 사건 종결). 호출 코드: 라인-알파벳-부대.
 - 적대 세력: '베일을 찢는 자들' (가짜 평화를 부수려 숏 트리를 붉게 변이시켜 결계 베일을 깨뜨리려는 해방주의 집단).`;
 
       try {
@@ -1360,23 +1436,25 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             systemInstruction: { parts: [{ text: systemPrompt }] },
-            contents: chatHistory
+            contents: commandHistory
           })
         });
         const data = await response.json();
         const replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
         if (replyText) {
-          chatHistory.push({ role: 'model', parts: [{ text: replyText }] });
-          loadingBubble.innerHTML = `<div class="chat-ai-name">[VEILED-CORE // GEMINI LIVE]</div>${escapeHtml(replyText).replace(/\n/g, '<br>')}`;
+          commandHistory.push({ role: 'model', parts: [{ text: replyText }] });
+          loadingDiv.innerHTML = escapeHtml(replyText).replace(/\n/g, '<br>');
         } else {
-          loadingBubble.innerHTML = `<div class="chat-ai-name">[SYSTEM ERROR]</div>API 응답을 받지 못했어. 키가 올바른지 확인해 줘! (내장 모드 응답: ${getBuiltInOperatorReply(text)})`;
+          const fallback = buildSmartCommandResponse(unitCode, loc, msg);
+          loadingDiv.innerHTML = (fallback.unitReply ? fallback.unitReply + '<br><br>' : '') + fallback.opReply;
         }
       } catch (err) {
-        loadingBubble.innerHTML = `<div class="chat-ai-name">[CONNECTION FAILED]</div>네트워크 오류로 내장 모드로 전환했어: ${getBuiltInOperatorReply(text)}`;
+        const fallback = buildSmartCommandResponse(unitCode, loc, msg);
+        loadingDiv.innerHTML = (fallback.unitReply ? fallback.unitReply + '<br><br>' : '') + fallback.opReply;
       }
     }
 
-    // 앱 1: 현장 파장 스캔
+    // 앱 2: 현장 파장 스캔
     const scanDatabase = {
       short_normal: {
         title: '[도감 #001] 정상 숏 트리 (Short Tree)',
@@ -1424,37 +1502,6 @@
           <div>${data.detail}</div>
         `;
       }, 650);
-    }
-
-    // 앱 2: 9부대 직통 무전 송수신
-    function sendUnitDispatch() {
-      const unitCode = document.getElementById('unit-code-input').value.trim().toUpperCase() || '1-A-1';
-      const loc = document.getElementById('dispatch-loc').value;
-      const msgInput = document.getElementById('dispatch-msg');
-      const msg = msgInput.value.trim();
-
-      if (!msg) return;
-
-      const logBox = document.getElementById('comms-log');
-      const now = new Date();
-      const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-
-      logBox.innerHTML += `<div class="log-entry"><span style="color:#00FF66;">[${timeStr} 지휘부 → ${escapeHtml(unitCode)}]</span> (${escapeHtml(loc)}) ${escapeHtml(msg)}</div>`;
-      msgInput.value = '';
-      logBox.scrollTop = logBox.scrollHeight;
-
-      setTimeout(() => {
-        let reply = `[${escapeHtml(unitCode)} 수신 완료] ${escapeHtml(loc)} 구역 좌표 확인. 지시대로 움직이겠습니다.`;
-        if (unitCode.startsWith('1-')) {
-          reply = `[${escapeHtml(unitCode)} 현장팀] ${escapeHtml(loc)} 진입 완료. 베일 스캐너 켜고 흔적 확보 중입니다.`;
-        } else if (unitCode.startsWith('2-')) {
-          reply = `[${escapeHtml(unitCode)} 분석팀] ${escapeHtml(loc)} 관련 데이터 수신. 4생활관 보고서 및 숏 트리 도감과 대조 시작합니다.`;
-        } else if (unitCode.startsWith('3-')) {
-          reply = `[${escapeHtml(unitCode)} 종결팀] ${escapeHtml(loc)} 투입 승인. 시민들 눈에 띄지 않게 즉시 마무리하겠습니다.`;
-        }
-        logBox.innerHTML += `<div class="log-entry" style="color:#A8FFC8;">${reply}</div>`;
-        logBox.scrollTop = logBox.scrollHeight;
-      }, 750);
     }
 
     // 앱 3: 베일 파장 레이더
