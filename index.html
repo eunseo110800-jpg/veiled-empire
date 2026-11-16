@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>베일드 제국 — 세계관 아카이브</title>
-  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -16,9 +16,21 @@
       color: #2E332D;
       font-family: 'Noto Sans KR', sans-serif;
       line-height: 1.7;
+      transition: background-color 0.5s, color 0.5s;
     }
 
-    /* 상단 헤더 (제국 기본 설정) */
+    #matrix-canvas {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
     header {
       background: linear-gradient(135deg, #2D3E33, #465E4E);
       color: #F7F5F0;
@@ -32,6 +44,11 @@
       font-size: 38px;
       margin: 0 0 10px 0;
       letter-spacing: 3px;
+    }
+
+    #hidden-trigger {
+      cursor: default;
+      user-select: none;
     }
 
     .motto {
@@ -56,9 +73,8 @@
       font-size: 14px;
     }
 
-    /* 본문 공통 레이아웃 */
     main {
-      max-width: 900px;
+      max-width: 920px;
       margin: 40px auto;
       padding: 0 20px;
     }
@@ -70,6 +86,7 @@
       padding: 35px;
       margin-bottom: 35px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+      transition: all 0.4s ease;
     }
 
     h2 {
@@ -80,7 +97,7 @@
       margin-top: 0;
     }
 
-    /* 1. 원형 대륙 인터랙티브 지도 */
+    /* 1. 원형 대륙 지도 */
     .map-container {
       display: flex;
       align-items: center;
@@ -92,8 +109,8 @@
 
     .continent-wrapper {
       position: relative;
-      width: 300px;
-      height: 300px;
+      width: 310px;
+      height: 310px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -110,24 +127,14 @@
     }
 
     .ring:hover {
-      box-shadow: 0 0 15px rgba(197, 168, 128, 0.8);
+      box-shadow: 0 0 15px rgba(197, 168, 128, 0.9);
     }
 
-    .ring-beach {
-      width: 220px;
-      height: 220px;
-      background-color: #D8E2DC;
-    }
-
-    .ring-forest {
-      width: 150px;
-      height: 150px;
-      background-color: #84A59D;
-    }
-
+    .ring-beach { width: 225px; height: 225px; background-color: #D8E2DC; }
+    .ring-forest { width: 155px; height: 155px; background-color: #84A59D; }
     .ring-center {
-      width: 80px;
-      height: 80px;
+      width: 82px;
+      height: 82px;
       background-color: #C5A880;
       color: white;
       font-weight: bold;
@@ -153,27 +160,24 @@
 
     .north { top: 0; left: 50%; transform: translateX(-50%); }
     .south { bottom: 0; left: 50%; transform: translateX(-50%); }
-    .east  { right: -10px; top: 50%; transform: translateY(-50%); }
-    .west  { left: -10px; top: 50%; transform: translateY(-50%); }
+    .east  { right: -12px; top: 50%; transform: translateY(-50%); }
+    .west  { left: -12px; top: 50%; transform: translateY(-50%); }
 
     .map-info {
       flex: 1;
-      min-width: 260px;
+      min-width: 270px;
       background-color: #F7F5F0;
       border-left: 4px solid #C5A880;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 22px;
+      border-radius: 12px;
     }
 
-    .map-info h3 {
-      margin-top: 0;
-      color: #2D3E33;
-    }
+    .map-info h3 { margin-top: 0; color: #2D3E33; }
 
-    /* 2. 제국 조직 구조 */
+    /* 2. 조직 구조 */
     .org-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
     }
 
@@ -181,20 +185,16 @@
       background-color: #F7F5F0;
       border: 1px solid #DFD9CE;
       border-radius: 15px;
-      padding: 20px;
+      padding: 22px;
     }
 
-    .org-box h3 {
-      margin-top: 0;
-      color: #465E4E;
-      font-size: 18px;
-    }
+    .org-box h3 { margin-top: 0; color: #465E4E; font-size: 18px; }
 
     .army-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .army-tag {
@@ -204,7 +204,7 @@
       font-size: 13px;
     }
 
-    /* 3. 등장인물 필터 & 카드 */
+    /* 3. 등장인물 */
     .filter-buttons {
       display: flex;
       gap: 10px;
@@ -229,14 +229,14 @@
 
     .char-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
     }
 
     .char-card {
       border: 1.5px solid #DFD9CE;
       border-radius: 15px;
-      padding: 20px;
+      padding: 22px;
       background-color: #FCFBF9;
     }
 
@@ -251,126 +251,289 @@
       margin-bottom: 8px;
     }
 
-    .char-name {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 4px 0;
-    }
+    .char-name { font-size: 20px; font-weight: bold; margin: 4px 0; }
+    .char-meta { font-size: 13px; color: #7A7469; margin-bottom: 10px; font-weight: 600; }
+    .char-desc { font-size: 14px; color: #3D423C; margin: 0; }
 
-    .char-meta {
-      font-size: 14px;
-      color: #666;
-    }
-
-    /* 4. 기밀 문서 봉인 해제 스타일 */
-    .secret-box {
-      background-color: #2D3E33;
-      color: #F7F5F0;
+    /* 4. 암호 입력형 기밀 문서 */
+    .secret-terminal {
+      background-color: #1A241E;
+      color: #E6D5B8;
       border: 2px solid #C5A880;
       border-radius: 15px;
       padding: 25px;
       text-align: center;
+    }
+
+    .code-input-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
       margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .code-input {
+      background-color: #0F1511;
+      border: 1.5px solid #C5A880;
+      color: #FFFFFF;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 15px;
+      text-align: center;
+      outline: none;
+    }
+
+    .code-btn {
+      background-color: #C5A880;
+      color: #1A241E;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .error-msg {
+      color: #FF6B6B;
+      font-size: 14px;
+      margin-top: 10px;
+      min-height: 20px;
     }
 
     .secret-content {
-      filter: blur(6px);
-      user-select: none;
-      transition: filter 0.5s ease;
+      display: none;
       text-align: left;
-      margin-top: 15px;
+      background-color: rgba(0, 0, 0, 0.35);
+      border-left: 3px solid #84A59D;
+      padding: 22px;
+      margin-top: 20px;
+      border-radius: 8px;
+      color: #F7F5F0;
     }
 
-    .secret-content.unlocked {
-      filter: blur(0);
-      user-select: auto;
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+    .shake { animation: shake 0.3s ease; }
+
+    /* 숨겨진 관리자 접속 모달 */
+    #admin-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
     }
 
-    .unlock-btn {
-      background-color: #C5A880;
-      color: #2D3E33;
+    .terminal-box {
+      background: #070D09;
+      border: 2px solid #00FF66;
+      box-shadow: 0 0 25px rgba(0, 255, 102, 0.4);
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00FF66;
+    }
+
+    .terminal-box input {
+      width: 100%;
+      background: #000;
+      border: 1px solid #00FF66;
+      color: #00FF66;
+      padding: 10px;
+      margin: 15px 0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 16px;
+      text-align: center;
+      outline: none;
+    }
+
+    .terminal-btn {
+      background: #00FF66;
+      color: #000;
       border: none;
       padding: 10px 20px;
-      border-radius: 20px;
+      font-family: 'Share Tech Mono', monospace;
       font-weight: bold;
       cursor: pointer;
-      font-size: 15px;
+      margin: 5px;
+    }
+
+    /* ACCESS GRANTED 연출 */
+    #granted-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #030805;
+      z-index: 2000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      color: #00FF66;
+      text-align: center;
+    }
+
+    .granted-title {
+      font-size: 48px;
+      letter-spacing: 5px;
+      border: 3px solid #00FF66;
+      padding: 20px 40px;
+      box-shadow: 0 0 40px #00FF66;
+      text-shadow: 0 0 15px #00FF66;
+    }
+
+    /* 해커 편집 모드 */
+    #hacker-toolbar {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: #050F08;
+      border-bottom: 2px solid #00FF66;
+      color: #00FF66;
+      padding: 12px 20px;
+      font-family: 'Share Tech Mono', monospace;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    body.hacker-mode {
+      background-color: #050806;
+      color: #A8FFC8;
+    }
+
+    body.hacker-mode #matrix-canvas { display: block; }
+
+    body.hacker-mode header {
+      background: rgba(5, 18, 10, 0.9);
+      border-bottom: 2px solid #00FF66;
+    }
+
+    body.hacker-mode section,
+    body.hacker-mode .org-box,
+    body.hacker-mode .char-card,
+    body.hacker-mode .map-info {
+      background-color: rgba(8, 20, 13, 0.88);
+      border-color: #00FF66;
+      color: #A8FFC8;
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
+    }
+
+    body.hacker-mode h1,
+    body.hacker-mode h2,
+    body.hacker-mode h3,
+    body.hacker-mode .motto,
+    body.hacker-mode .char-desc,
+    body.hacker-mode .char-meta {
+      color: #00FF66;
+      border-color: #00FF66;
+    }
+
+    body.hacker-mode [contenteditable="true"] {
+      outline: 1px dashed rgba(0, 255, 102, 0.5);
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    body.hacker-mode [contenteditable="true"]:focus {
+      outline: 2px solid #00FF66;
+      background-color: rgba(0, 255, 102, 0.1);
     }
   </style>
 </head>
 <body>
 
-  <!-- 상단 제국 소개 -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <div id="hacker-toolbar">
+    <span>[SYSTEM OVERRIDE] ACCESS GRANTED — 글자를 클릭해 직접 편집하세요</span>
+    <div>
+      <button class="terminal-btn" onclick="copyEditedCode()">수정된 전체 코드 복사</button>
+      <button class="terminal-btn" style="background:#FF4D4D; color:#FFF;" onclick="exitHackerMode()">편집 종료</button>
+    </div>
+  </div>
+
   <header>
-    <h1>베일드 제국</h1>
-    <p class="motto">"신이 가장 아름다운 꽃을 심을 땅을 찾으니, 그게 이 땅이 되었다."</p>
+    <h1>베<span id="hidden-trigger" onclick="openAdminModal()">일</span>드 제국</h1>
+    <p class="motto editable">"신이 가장 아름다운 꽃을 심을 땅을 찾으니, 그게 이 땅이 되었다."</p>
     <div class="badges">
-      <span class="badge">🌸 국교: 꽃의 신 나필레리아</span>
-      <span class="badge">🪙 화폐 단위: 룬 (Rune)</span>
-      <span class="badge">🧭 지형: 원형 대륙</span>
+      <span class="badge editable">🌸 국교: 꽃의 신 나필레리아</span>
+      <span class="badge editable">🪙 화폐 단위: 룬 (Rune)</span>
+      <span class="badge editable">🧭 지형: 원형 대륙</span>
     </div>
   </header>
 
   <main>
-    <!-- 1. 지리 구조 섹션 -->
+    <!-- 1. 지리 구조 -->
     <section>
-      <h2>🗺️ 원형 대륙 지리 구조</h2>
-      <p>원이나 방위 버튼을 클릭하면 각 지역의 설정을 확인할 수 있습니다.</p>
+      <h2 class="editable">🗺️ 원형 대륙 지리 구조</h2>
+      <p class="editable">원이나 동서남북 생활관 버튼을 클릭하면 각 지역의 상세 설정이 표시됩니다.</p>
       
       <div class="map-container">
         <div class="continent-wrapper">
-          <button class="dorm-btn north" onclick="showLocation('북 · 4생활관', '대륙 북쪽 끝에 위치한 생활관입니다. 부관리자 크시와 이든이 소속되어 있습니다.')">북 · 4생활관</button>
-          <button class="dorm-btn east" onclick="showLocation('동 · 1생활관', '대륙 동쪽 끝에 위치한 생활관입니다.')">동 · 1생활관</button>
-          <button class="dorm-btn south" onclick="showLocation('남 · 3생활관', '대륙 남쪽 끝에 위치한 생활관입니다.')">남 · 3생활관</button>
-          <button class="dorm-btn west" onclick="showLocation('서 · 2생활관', '대륙 서쪽 끝에 위치한 생활관입니다.')">서 · 2생활관</button>
+          <button class="dorm-btn north" onclick="showLocation(event, '북 · 4생활관 [서리의 요새]', '대륙에서 가장 춥고 규율이 엄격한 최전선 요충지입니다. 제국군 정예가 주둔하며, 부관리자 크시와 이든이 소속되어 있습니다.')">북 · 4생활관</button>
+          <button class="dorm-btn east" onclick="showLocation(event, '동 · 1생활관 [새벽의 온실]', '해가 가장 먼저 뜨는 풍요로운 생산 거점입니다. 나필레리아의 신성한 꽃을 재배하고, 제국 화폐인 \'룬\'을 주조합니다.')">동 · 1생활관</button>
+          <button class="dorm-btn south" onclick="showLocation(event, '남 · 3생활관 [파도의 경계]', '바닷바람이 부는 가장 자유롭고 느슨한 구역입니다. 감시의 눈길이 비교적 얇아 외지인과 비밀이 모이기 쉽습니다.')">남 · 3생활관</button>
+          <button class="dorm-btn west" onclick="showLocation(event, '서 · 2생활관 [황혼의 서고]', '해가 지는 차가운 행정 구역입니다. 제국 전역의 보고병과 감사병이 올린 감시 기록이 집결합니다.')">서 · 2생활관</button>
 
-          <div class="ring ring-beach" onclick="showLocation('3. 해변가 마을', '숲띠 너머, 바다에 가까운 작은 마을입니다. 남부 마을에는 유명한 카페와 알바생들이 지내는 창고가 있습니다.')">
-            <div class="ring ring-forest" onclick="showLocation('2. 숲띠', '도심을 둥글게 둘러싸고 있는 울창한 숲 지대입니다.')">
-              <div class="ring ring-center" onclick="showLocation('1. 도심', '원형 대륙의 정중앙에 위치한 제국의 핵심 구역입니다.')">
+          <div class="ring ring-beach" onclick="showLocation(event, '3. 해변가 마을', '숲띠 너머 바다와 맞닿은 상업·휴양 지대입니다. 특히 남부 해변 마을에는 제국에서 가장 유명한 카페와 알바생들이 지내는 창고가 있습니다.')">
+            <div class="ring ring-forest" onclick="showLocation(event, '2. 숲띠', '도심을 둥글게 감싸고 있는 거대한 완충 지대입니다. 일반인의 무단 출입이 통제되며, 변이된 식물을 정화하는 역할을 합니다.')">
+              <div class="ring ring-center" onclick="showLocation(event, '1. 도심 [나필레리아의 온실]', '원형 대륙의 정중앙에 위치한 심장부입니다. 제국에 단 1명뿐인 총관리자 나민이 머무는 중앙 청사가 자리 잡고 있습니다.')">
                 도심
               </div>
             </div>
           </div>
         </div>
 
-        <div class="map-info" id="map-info-box">
-          <h3 id="loc-title">1. 도심</h3>
-          <p id="loc-desc">원형 대륙의 정중앙에 위치한 제국의 핵심 구역입니다. 왼쪽 지도에서 다른 구역이나 생활관을 눌러보세요!</p>
+        <div class="map-info">
+          <h3 id="loc-title" class="editable">1. 도심 [나필레리아의 온실]</h3>
+          <p id="loc-desc" class="editable">원형 대륙의 정중앙에 위치한 심장부입니다. 제국에 단 1명뿐인 총관리자 나민이 머무는 중앙 청사가 자리 잡고 있습니다. 왼쪽 지도에서 다른 구역을 눌러보세요!</p>
         </div>
       </div>
     </section>
 
-    <!-- 2. 제국 조직 구조 섹션 -->
+    <!-- 2. 조직 구조 -->
     <section>
-      <h2>⚔️ 제국 조직 구조</h2>
+      <h2 class="editable">⚔️ 제국 조직 구조</h2>
       <div class="org-grid">
         <div class="org-box">
-          <h3>👑 총괄</h3>
-          <p><strong>총관리자</strong> — 제국 전체에 단 1명만 존재하는 최고 책임자</p>
+          <h3 class="editable">👑 총괄</h3>
+          <p class="editable"><strong>총관리자</strong> — 제국 전체에 단 1명만 존재하는 최고 책임자. 표면의 질서와 나필레리아의 평화를 총괄합니다.</p>
         </div>
         <div class="org-box">
-          <h3>🏛️ 생활관별 편제 (4개 생활관 각각)</h3>
+          <h3 class="editable">🏛️ 생활관별 편제 (4개 생활관 각각)</h3>
           <ul>
-            <li>부관리자 2명</li>
-            <li>책임관리자 6명</li>
-            <li>관리자 15명</li>
-            <li>제국군 (다수)</li>
+            <li class="editable">부관리자 2명</li>
+            <li class="editable">책임관리자 6명</li>
+            <li class="editable">관리자 15명</li>
+            <li class="editable">제국군 (다수)</li>
           </ul>
           <div class="army-tags">
-            <span class="army-tag">감사병</span>
-            <span class="army-tag">감독병</span>
-            <span class="army-tag">보고병</span>
-            <span class="army-tag">감시병</span>
-            <span class="army-tag">관리병</span>
-            <span class="army-tag">생활병</span>
+            <span class="army-tag editable">감사병</span>
+            <span class="army-tag editable">감독병</span>
+            <span class="army-tag editable">보고병</span>
+            <span class="army-tag editable">감시병</span>
+            <span class="army-tag editable">관리병</span>
+            <span class="army-tag editable">생활병</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 3. 등장인물 섹션 -->
+    <!-- 3. 등장인물 -->
     <section>
-      <h2>👤 등장인물</h2>
+      <h2 class="editable">👤 등장인물</h2>
       <div class="filter-buttons">
         <button class="filter-btn active" onclick="filterChars('all', this)">전체 보기</button>
         <button class="filter-btn" onclick="filterChars('official', this)">제국 관직</button>
@@ -380,88 +543,206 @@
 
       <div class="char-grid">
         <div class="char-card" data-group="official">
-          <span class="char-role">총관리자</span>
-          <div class="char-name">나민 (여)</div>
-          <div class="char-meta">소속: 제국 전체</div>
+          <span class="char-role editable">총관리자</span>
+          <div class="char-name editable">나민 (여)</div>
+          <div class="char-meta editable">소속: 제국 전체 (도심)</div>
+          <p class="char-desc editable">온화한 미소 뒤에 냉철한 계산을 숨긴 최고 책임자. 공식 시스템의 한계를 알기에 비밀 '조직'의 존재를 묵인하고 공조합니다.</p>
         </div>
 
         <div class="char-card" data-group="official">
-          <span class="char-role">부관리자</span>
-          <div class="char-name">크시 (여)</div>
-          <div class="char-meta">소속: 4생활관 (북)</div>
+          <span class="char-role editable">부관리자</span>
+          <div class="char-name editable">크시 (여)</div>
+          <div class="char-meta editable">소속: 4생활관 (북)</div>
+          <p class="char-desc editable">빈틈없는 원칙주의자. 4생활관의 치안을 칼같이 통제하며, 최근 남부(3생활관) 쪽에서 보고 누락이 잦아지는 것을 주시하고 있습니다.</p>
         </div>
 
         <div class="char-card" data-group="official">
-          <span class="char-role">부관리자</span>
-          <div class="char-name">이든 (남)</div>
-          <div class="char-meta">소속: 4생활관 (북)</div>
+          <span class="char-role editable">부관리자</span>
+          <div class="char-name editable">이든 (남)</div>
+          <div class="char-meta editable">소속: 4생활관 (북)</div>
+          <p class="char-desc editable">크시와 정반대인 유연한 현장파. 엄격한 병사들 사이의 완충제 역할을 하며, 서류에 남지 않는 사람 냄새 나는 단서를 포착합니다.</p>
         </div>
 
         <div class="char-card" data-group="cafe">
-          <span class="char-role">카페 알바생</span>
-          <div class="char-name">루먀 (여)</div>
-          <div class="char-meta">주거지: 남부 마을 카페 '창고'</div>
+          <span class="char-role editable">카페 알바생</span>
+          <div class="char-name editable">루먀 (여)</div>
+          <div class="char-meta editable">주거지: 남부 마을 카페 '창고'</div>
+          <p class="char-desc editable">남부 최고 인기 카페의 간판 알바생. 넉살 좋고 눈치가 백단이라 손님들의 수다 속에서 제국의 이상 징후를 가장 먼저 캐치합니다.</p>
         </div>
 
         <div class="char-card" data-group="cafe">
-          <span class="char-role">카페 알바생</span>
-          <div class="char-name">프사이 (여)</div>
-          <div class="char-meta">주거지: 남부 마을 카페 '창고'</div>
+          <span class="char-role editable">카페 알바생</span>
+          <div class="char-name editable">프사이 (여)</div>
+          <div class="char-meta editable">주거지: 남부 마을 카페 '창고'</div>
+          <p class="char-desc editable">말수가 적고 차분한 레시피 담당. 루먀와 함께 카페 뒤편 '창고'에서 지내며, 밤이 되면 창고 지하의 진짜 기능을 관리합니다.</p>
         </div>
 
         <div class="char-card" data-group="org">
-          <span class="char-role">비밀 핵심 집단</span>
-          <div class="char-name">조직 (구성원 추가 예정)</div>
-          <div class="char-meta">나쁜 세력이 아니라, 제국이 돌아가게 하는 핵심적이고 중요한 존재</div>
+          <span class="char-role editable">비밀 핵심 집단</span>
+          <div class="char-name editable">조직 (구성원 추가 예정)</div>
+          <div class="char-meta editable">소속: 제국 이면</div>
+          <p class="char-desc editable">반역 집단이 아니라, 제국이 멈추지 않도록 뒤에서 썩은 뿌리를 도려내고 결계(베일)를 수리하는 그림자 유지보수 집단입니다.</p>
         </div>
       </div>
     </section>
 
-    <!-- 4. 기밀 문서 (봉인 해제 기능) -->
+    <!-- 4. 암호 입력형 기밀 문서 -->
     <section>
-      <h2>🔒 1급 기밀: 베일 너머의 기록</h2>
-      <div class="secret-box">
-        <button class="unlock-btn" id="seal-btn" onclick="unlockSecret()">🌸 나필레리아의 인장 해제하기</button>
+      <h2 class="editable">🔒 1급 기밀: 베일 너머의 기록</h2>
+      <div class="secret-terminal" id="secret-box">
+        <p style="margin:0;">열람하려면 제국의 보안 코드를 입력하세요. (힌트: 국교의 신 이름)</p>
+        <div class="code-input-group">
+          <input type="text" id="doc-code" class="code-input" placeholder="보안 코드 입력...">
+          <button class="code-btn" onclick="unlockSecretDoc()">해독 실행</button>
+        </div>
+        <div class="error-msg" id="doc-error"></div>
+
         <div class="secret-content" id="secret-text">
-          <p><strong>[기밀 01 · '조직'의 진짜 역할]</strong><br>
-          제국의 평화로운 꽃밭 아래, 4개 생활관의 균형이 무너지지 않도록 보이지 않는 곳에서 시스템을 조율하는 핵심 집단입니다.</p>
-          <p><strong>[기밀 02 · 남부 마을 '창고'의 비밀]</strong><br>
-          카페 알바생 루먀와 프사이가 머무는 창고는 사실 제국 외곽과 핵심 조직을 잇는 비밀 연락 거점입니다.</p>
+          <p class="editable"><strong>[기밀 01 · 베일의 법칙과 감시 시스템]</strong><br>
+          대륙을 지키는 결계 '베일'은 나필레리아의 꽃에서 나오는 마력으로 유지됩니다. 하지만 꽃이 인간의 분노·탐욕 같은 격한 감정을 흡수하면 결계를 갉아먹는 독초로 변이하기 때문에, 제국군이 24시간 일상을 감시하고 관리해야만 합니다.</p>
+          <p class="editable"><strong>[기밀 02 · '조직'의 진짜 역할]</strong><br>
+          총관리자 나민이 규율로 겉의 질서를 지킨다면, '조직'은 규율 바깥의 방법으로 변이된 뿌리를 제거하고 베일을 보수하는 핵심 집단입니다.</p>
+          <p class="editable"><strong>[기밀 03 · 남부 마을 '창고'의 비밀]</strong><br>
+          루먀와 프사이가 머무는 카페 뒤편 창고 지하에는 도심과 4개 생활관의 사각지대를 잇는 비밀 연락망과 베일 관측 장치가 숨겨져 있습니다.</p>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- 숨겨진 관리자 접속 모달 -->
+  <div id="admin-modal">
+    <div class="terminal-box">
+      <div style="font-size:18px; margin-bottom:8px;">[RESTRICTED SYSTEM]</div>
+      <div style="font-size:13px; color:#88FFAA;">OVERRIDE PASSWORD REQUIRED</div>
+      <input type="password" id="admin-pass" placeholder="ENTER CODE...">
+      <div id="admin-error" style="color:#FF4D4D; font-size:13px; min-height:18px;"></div>
+      <button class="terminal-btn" onclick="checkAdminPass()">ACCESS</button>
+      <button class="terminal-btn" style="background:#333; color:#FFF;" onclick="closeAdminModal()">CANCEL</button>
+    </div>
+  </div>
+
+  <!-- ACCESS GRANTED 연출 화면 -->
+  <div id="granted-overlay">
+    <div class="granted-title">ACCESS GRANTED</div>
+    <p style="margin-top:20px; letter-spacing:2px;">INITIALIZING LIVE ARCHIVE EDITOR...</p>
+  </div>
+
   <script>
-    // 1. 지도 구역 클릭 시 설명 바꾸기
-    function showLocation(title, desc) {
-      event.stopPropagation();
+    function showLocation(e, title, desc) {
+      e.stopPropagation();
       document.getElementById('loc-title').innerText = title;
       document.getElementById('loc-desc').innerText = desc;
     }
 
-    // 2. 등장인물 필터 버튼 클릭 시 해당 그룹만 보여주기
     function filterChars(group, clickedBtn) {
-      const buttons = document.querySelectorAll('.filter-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       clickedBtn.classList.add('active');
 
-      const cards = document.querySelectorAll('.char-card');
-      cards.forEach(card => {
-        if (group === 'all' || card.dataset.group === group) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+      document.querySelectorAll('.char-card').forEach(card => {
+        card.style.display = (group === 'all' || card.dataset.group === group) ? 'block' : 'none';
       });
     }
 
-    // 3. 기밀 문서 봉인 해제하기
-    function unlockSecret() {
-      document.getElementById('secret-text').classList.add('unlocked');
-      const btn = document.getElementById('seal-btn');
-      btn.innerText = '🔓 베일이 걷혔습니다';
-      btn.style.backgroundColor = '#84A59D';
+    function unlockSecretDoc() {
+      const input = document.getElementById('doc-code').value.trim();
+      const errorBox = document.getElementById('doc-error');
+      const terminal = document.getElementById('secret-box');
+
+      if (input === '나필레리아') {
+        errorBox.style.color = '#84A59D';
+        errorBox.innerText = '✔ 인증 완료: 1급 기밀 기록의 베일이 걷혔습니다.';
+        document.getElementById('secret-text').style.display = 'block';
+      } else {
+        errorBox.style.color = '#FF6B6B';
+        errorBox.innerText = '✖ [접근 거부] 일치하지 않는 보안 코드입니다.';
+        terminal.classList.remove('shake');
+        void terminal.offsetWidth;
+        terminal.classList.add('shake');
+      }
+    }
+
+    function openAdminModal() {
+      document.getElementById('admin-modal').style.display = 'flex';
+      document.getElementById('admin-pass').value = '';
+      document.getElementById('admin-error').innerText = '';
+    }
+
+    function closeAdminModal() {
+      document.getElementById('admin-modal').style.display = 'none';
+    }
+
+    function checkAdminPass() {
+      const pass = document.getElementById('admin-pass').value.trim().toLowerCase();
+      if (pass === 'veiled') {
+        closeAdminModal();
+        const overlay = document.getElementById('granted-overlay');
+        overlay.style.display = 'flex';
+
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          document.body.classList.add('hacker-mode');
+          document.getElementById('hacker-toolbar').style.display = 'flex';
+          document.getElementById('secret-text').style.display = 'block';
+          startMatrix();
+
+          document.querySelectorAll('.editable').forEach(el => {
+            el.setAttribute('contenteditable', 'true');
+          });
+        }, 1500);
+      } else {
+        document.getElementById('admin-error').innerText = 'ACCESS DENIED: INVALID KEY';
+      }
+    }
+
+    function copyEditedCode() {
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('body').classList.remove('hacker-mode');
+      clone.querySelector('#hacker-toolbar').style.display = 'none';
+      clone.querySelector('#secret-text').style.display = 'none';
+      clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+
+      const fullHtml = '<!DOCTYPE html>\n' + clone.outerHTML;
+      navigator.clipboard.writeText(fullHtml).then(() => {
+        alert('수정된 전체 HTML 코드가 클립보드에 복사되었습니다! 깃허브 index.html에 붙여넣으면 영구 저장됩니다.');
+      });
+    }
+
+    function exitHackerMode() {
+      document.body.classList.remove('hacker-mode');
+      document.getElementById('hacker-toolbar').style.display = 'none';
+      document.querySelectorAll('.editable').forEach(el => {
+        el.removeAttribute('contenteditable');
+      });
+    }
+
+    let matrixInterval;
+    function startMatrix() {
+      const canvas = document.getElementById('matrix-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const letters = 'VEILED0123456789RUNE@#%&*';
+      const fontSize = 14;
+      const columns = canvas.width / fontSize;
+      const drops = Array(Math.floor(columns)).fill(1);
+
+      clearInterval(matrixInterval);
+      matrixInterval = setInterval(() => {
+        ctx.fillStyle = 'rgba(5, 8, 6, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00FF66';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }, 40);
     }
   </script>
 
