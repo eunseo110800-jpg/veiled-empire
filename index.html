@@ -19,7 +19,6 @@
       transition: background-color 0.5s, color 0.5s;
     }
 
-    /* 해킹 모드 매트릭스 배경 */
     #matrix-canvas {
       display: none;
       position: fixed;
@@ -32,7 +31,6 @@
       pointer-events: none;
     }
 
-    /* 상단 헤더 */
     header {
       background: linear-gradient(135deg, #2D3E33, #4A6352);
       color: #F7F5F0;
@@ -60,7 +58,6 @@
       letter-spacing: 4px;
     }
 
-    /* 숨겨진 트리거 ('일' 글자) */
     #hidden-trigger {
       cursor: default;
       user-select: none;
@@ -88,7 +85,6 @@
       font-size: 14px;
     }
 
-    /* 본문 레이아웃 */
     main {
       max-width: 940px;
       margin: 40px auto;
@@ -113,7 +109,6 @@
       margin-top: 0;
     }
 
-    /* 조직 전용 섹션 (기본 시민 시점에서는 완전히 숨김) */
     .org-only {
       display: none;
     }
@@ -199,7 +194,6 @@
 
     .map-info h3 { margin-top: 0; color: #2D3E33; }
 
-    /* 숏 트리 & 남부 명물 배너 (시민 시점 하이라이트) */
     .sherbet-box {
       background: linear-gradient(135deg, #F3F6F1, #EAE3D5);
       border: 1.5px solid #C5A880;
@@ -289,7 +283,7 @@
     .char-meta { font-size: 13px; color: #7A7469; margin-bottom: 10px; font-weight: 600; }
     .char-desc { font-size: 14px; color: #3D423C; margin: 0; }
 
-    /* 조직 9부대 카드 그리드 */
+    /* 조직 9부대 카드 */
     .line-block {
       border: 1px solid #00FF66;
       border-radius: 12px;
@@ -313,40 +307,232 @@
       font-size: 14px;
     }
 
-    /* 조직 단말기 OS 시뮬레이터 */
-    .device-tabs {
+    /* =========================================
+       [신규] 인터랙티브 조직 전용 단말기 시뮬레이터
+       ========================================= */
+    .pda-device {
+      background: #030905;
+      border: 2.5px solid #00FF66;
+      border-radius: 18px;
+      box-shadow: 0 0 30px rgba(0, 255, 102, 0.25), inset 0 0 20px rgba(0, 255, 102, 0.08);
+      overflow: hidden;
+      font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
+    }
+
+    .pda-status-bar {
+      background: #07190E;
+      border-bottom: 1px solid #00FF66;
+      padding: 10px 18px;
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #00FF66;
+      flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 15px;
+    }
+
+    .camo-trigger-btn {
+      background: #FF4D4D;
+      color: #FFF;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .camo-trigger-btn:hover {
+      background: #FF1F1F;
+    }
+
+    .pda-nav {
+      display: flex;
+      background: #041109;
+      border-bottom: 1px solid rgba(0, 255, 102, 0.4);
       flex-wrap: wrap;
     }
 
-    .device-tab {
-      background: #020A05;
-      border: 1px solid #00FF66;
-      color: #00FF66;
-      padding: 7px 14px;
+    .pda-app-btn {
+      flex: 1;
+      min-width: 140px;
+      background: transparent;
+      border: none;
+      border-right: 1px solid rgba(0, 255, 102, 0.25);
+      color: #77CC99;
+      padding: 12px 10px;
       cursor: pointer;
       font-family: 'Share Tech Mono', 'Noto Sans KR', sans-serif;
       font-size: 13px;
-      border-radius: 6px;
-    }
-
-    .device-tab.active, .device-tab:hover {
-      background: #00FF66;
-      color: #000;
       font-weight: bold;
+      transition: all 0.2s;
     }
 
-    .device-screen {
-      background: #020804;
+    .pda-app-btn:hover, .pda-app-btn.active {
+      background: rgba(0, 255, 102, 0.18);
+      color: #00FF66;
+      box-shadow: inset 0 -3px 0 #00FF66;
+    }
+
+    .pda-body {
+      padding: 22px;
+      min-height: 310px;
+    }
+
+    .pda-panel {
+      display: none;
+    }
+
+    .pda-panel.active {
+      display: block;
+    }
+
+    /* 스캐너 앱 스타일 */
+    .scan-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .pda-select, .pda-input {
+      background: #010503;
       border: 1px solid #00FF66;
-      padding: 20px;
+      color: #00FF66;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-family: 'Noto Sans KR', 'Share Tech Mono', sans-serif;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .pda-action-btn {
+      background: #00FF66;
+      color: #020804;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: 'Noto Sans KR', 'Share Tech Mono', sans-serif;
+    }
+
+    .pda-action-btn:hover {
+      background: #55FF99;
+    }
+
+    .scan-bar-wrap {
+      width: 100%;
+      height: 8px;
+      background: #0A2213;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .scan-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: #00FF66;
+      transition: width 0.6s ease;
+    }
+
+    .scan-result-box {
+      border: 1px solid rgba(0, 255, 102, 0.5);
+      background: rgba(0, 255, 102, 0.05);
+      padding: 18px;
       border-radius: 10px;
       font-size: 14px;
+      line-height: 1.7;
     }
 
-    /* 숨겨진 관리자 접속 팝업 (모달) */
+    /* 무전 통신 앱 스타일 */
+    .comms-log {
+      height: 190px;
+      overflow-y: auto;
+      background: #010402;
+      border: 1px solid rgba(0, 255, 102, 0.4);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .log-entry {
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed rgba(0, 255, 102, 0.2);
+    }
+
+    .comms-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* 레이더 앱 스타일 */
+    .radar-layout {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .radar-circle {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      border: 2px solid #00FF66;
+      background: radial-gradient(circle, rgba(0,255,102,0.15) 0%, rgba(0,20,8,0.9) 75%);
+      position: relative;
+      flex-shrink: 0;
+      margin: 0 auto;
+    }
+
+    .radar-circle::before {
+      content: '';
+      position: absolute;
+      inset: 35px;
+      border-radius: 50%;
+      border: 1px dashed rgba(0, 255, 102, 0.4);
+    }
+
+    .radar-blip {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #FF4D4D;
+      box-shadow: 0 0 12px #FF4D4D;
+      position: absolute;
+      top: 42px;
+      right: 36px;
+      display: none;
+    }
+
+    /* 위장 모드(시민 허가증) 화면 */
+    .camo-screen {
+      display: none;
+      background: #F7F5F0;
+      color: #2E332D;
+      padding: 30px;
+      text-align: center;
+      font-family: 'Gowun Batang', serif;
+    }
+
+    .camo-card {
+      border: 2px solid #C5A880;
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 25px;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    /* 모달 & ACCESS GRANTED */
     #admin-modal {
       display: none;
       position: fixed;
@@ -395,7 +581,6 @@
       border-radius: 4px;
     }
 
-    /* ACCESS GRANTED 연출 */
     #granted-overlay {
       display: none;
       position: fixed;
@@ -419,7 +604,6 @@
       text-shadow: 0 0 15px #00FF66;
     }
 
-    /* 해커 상단 툴바 */
     #hacker-toolbar {
       display: none;
       position: sticky;
@@ -612,7 +796,6 @@
         </div>
       </div>
 
-      <!-- 숲띠 & 숏 트리 샤벳 박스 -->
       <div class="sherbet-box">
         <strong class="dual editable"
                 data-citizen="🍧 제국의 명물: 숲띠의 '숏 트리(Short Tree)'와 샤벳"
@@ -716,7 +899,114 @@
       </div>
     </section>
 
-    <!-- [조직 시점 전용 1] 비밀 '조직' 9부대 편제 & 호출 코드 -->
+    <!-- [조직 시점 전용 1] 인터랙티브 조직 단말기 체험 시뮬레이터 -->
+    <section class="org-only">
+      <h2 class="editable">📟 조직 전용 단말기 시뮬레이터 [VEILED-OS v4.9]</h2>
+      <p class="editable">단말기의 각 프로그램을 직접 클릭하여 현장 스캔, 9부대 무전, 베일 레이더, 제국군 검문 위장을 체험해 보세요.</p>
+
+      <div class="pda-device">
+        <!-- 단말기 상단 상태바 -->
+        <div class="pda-status-bar">
+          <span>[VEILED-OS] 암호화 회선 연결됨 · 인증: 총관리자/조직</span>
+          <button class="camo-trigger-btn" id="camo-btn" onclick="toggleCamouflage()">⚠️ 감시병 접근! 위장 모드 실행</button>
+        </div>
+
+        <!-- 실제 단말기 OS 화면 -->
+        <div id="pda-os-main">
+          <div class="pda-nav">
+            <button class="pda-app-btn active" onclick="switchPdaApp('scanner', this)">🌿 현장 스캐너 · 도감</button>
+            <button class="pda-app-btn" onclick="switchPdaApp('comms', this)">📡 9부대 직통 무전</button>
+            <button class="pda-app-btn" onclick="switchPdaApp('radar', this)">🛡️ 베일 파장 레이더</button>
+            <button class="pda-app-btn" onclick="switchPdaApp('enemy', this)">☠️ 적대 세력 파일</button>
+          </div>
+
+          <div class="pda-body">
+            <!-- 앱 1: 현장 스캐너 & 도감 -->
+            <div id="app-scanner" class="pda-panel active">
+              <div class="scan-controls">
+                <select id="scan-target" class="pda-select">
+                  <option value="short_normal">대상 01: 숲띠 산책로 '숏 트리' 샘플</option>
+                  <option value="short_crimson">대상 02: 숲띠 외곽 '붉게 변이한 숏 트리'</option>
+                  <option value="warehouse">대상 03: 남부 마을 카페 '창고' 지하 신호</option>
+                  <option value="dorm4">대상 04: 북부 4생활관 감시 보고서 패킷</option>
+                </select>
+                <button class="pda-action-btn" onclick="runFieldScan()">🔍 파장 스캔 실행</button>
+              </div>
+
+              <div class="scan-bar-wrap" id="scan-bar-wrap">
+                <div class="scan-bar-fill" id="scan-bar-fill"></div>
+              </div>
+
+              <div class="scan-result-box" id="scan-result">
+                <strong>[도감 대기 중]</strong> 위 목록에서 스캔할 대상이나 구역을 선택한 뒤 <strong>[파장 스캔 실행]</strong> 버튼을 누르세요.
+              </div>
+            </div>
+
+            <!-- 앱 2: 9부대 라인 직통 무전 -->
+            <div id="app-comms" class="pda-panel">
+              <div class="comms-log" id="comms-log">
+                <div class="log-entry"><span style="color:#88FFAA;">[SYSTEM]</span> 1~9부대 암호화 무전망이 활성화되었습니다. (호출 규칙: 라인-알파벳-부대)</div>
+                <div class="log-entry"><span style="color:#E6D5B8;">[창고 중계소 · 프사이]</span> 남부 마을 특이사항 없음. 오늘 추출한 숏 트리 수액 데이터 5부대로 전송 완료.</div>
+              </div>
+
+              <div class="comms-form">
+                <input type="text" id="unit-code-input" class="pda-input" style="width:110px;" value="1-A-1" placeholder="예: 1-A-1">
+                <select id="dispatch-loc" class="pda-select">
+                  <option value="숲띠 외곽">숲띠 외곽</option>
+                  <option value="남부 카페 창고">남부 카페 창고</option>
+                  <option value="해변가 경계선">해변가 경계선</option>
+                  <option value="북부 4생활관">북부 4생활관</option>
+                </select>
+                <input type="text" id="dispatch-msg" class="pda-input" style="flex:1; min-width:160px;" placeholder="작전 지시 입력 (예: 변이 반응 확인 요망)" onkeyup="if(event.key==='Enter') sendUnitDispatch()">
+                <button class="pda-action-btn" onclick="sendUnitDispatch()">무전 송신</button>
+              </div>
+            </div>
+
+            <!-- 앱 3: 베일 파장 레이더 -->
+            <div id="app-radar" class="pda-panel">
+              <div class="radar-layout">
+                <div class="radar-circle">
+                  <div class="radar-blip" id="radar-blip"></div>
+                </div>
+                <div style="flex:1; min-width:220px;">
+                  <div style="font-size:16px; margin-bottom:8px;">
+                    현재 결계(베일) 안정도: <strong id="veil-percent" style="color:#00FF66;">96.4%</strong>
+                  </div>
+                  <p id="radar-status-text" style="font-size:13px; color:#A8FFC8; margin-bottom:15px;">
+                    원형 대륙 외곽 베일이 정상 가동 중입니다. 정밀 탐지를 실행해 미세 균열을 확인하세요.
+                  </p>
+                  <button class="pda-action-btn" onclick="scanVeilAnomalies()">📡 이상 파장 정밀 탐지</button>
+                  <button class="pda-action-btn" id="repair-veil-btn" style="background:#E6D5B8; display:none; margin-left:6px;" onclick="repairVeil()">🛠️ 8부대 긴급 수복 실행</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 앱 4: 적대 세력 파일 -->
+            <div id="app-enemy" class="pda-panel">
+              <div class="scan-result-box" style="border-color:#FF6B6B;">
+                <p style="color:#FF6B6B; margin-top:0;"><strong>[위협 등급: HIGH] 적대 세력 — '베일을 찢는 자들'</strong></p>
+                <p class="editable">• <strong>사상 및 목적:</strong> 베일드 제국의 평화를 '신과 관리자들에게 사육당하는 가짜 온실'이라 규정하는 반체제 해방주의 집단. 결계(베일)를 파괴해 통제 없는 날것의 자유를 되찾으려 합니다.</p>
+                <p class="editable" style="margin-bottom:0;">• <strong>주요 수법:</strong> 감시가 느슨한 해변가 외곽과 숲띠에 침투해 숏 트리를 고의로 변이시키거나, 시민들 사이에 불안을 퍼뜨려 베일에 균열을 냅니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 위장 모드 화면 (제국군 검문 회피용 시민 허가증) -->
+        <div id="pda-camo-screen" class="camo-screen">
+          <div class="camo-card">
+            <div style="font-size:12px; color:#7A7469;">🌸 나필레리아의 축복이 함께하기를</div>
+            <h3 style="margin:8px 0; color:#2D3E33;">베일드 제국 공식 상업 · 산책 허가증</h3>
+            <hr style="border:0; border-top:1px solid #DFD9CE; margin:12px 0;">
+            <p style="font-size:14px; margin:6px 0;"><strong>소속 구역:</strong> 남부 해변가 마을 (제3생활관 관할)</p>
+            <p style="font-size:14px; margin:6px 0;"><strong>허가 용도:</strong> 숲띠 산책 및 '숏 트리' 합법 채집 (카페 원료용)</p>
+            <p style="font-size:13px; color:#4A6352; margin-top:12px;">✔ 본 문서는 제국군 감사병 및 감시병의 정식 승인을 받은 시민 전자 수첩입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- [조직 시점 전용 2] 비밀 '조직' 9부대 편제 & 호출 코드 -->
     <section class="org-only">
       <h2 class="editable">🕸️ 비밀 '조직' — 9부대 파이프라인 &amp; 호출 규약</h2>
       <p class="editable">조직은 제국을 무너뜨리는 적이 아니라, 제국이 멈추지 않도록 뒤에서 톱니바퀴를 조율하는 핵심 집단입니다.<br>
@@ -749,40 +1039,6 @@
         </div>
       </div>
     </section>
-
-    <!-- [조직 시점 전용 2] 조직 전용 단말기 & 적대 세력 파일 -->
-    <section class="org-only">
-      <h2 class="editable">📟 조직 전용 단말기 OS &amp; 적대 세력 보고서</h2>
-      <div class="device-tabs">
-        <button class="device-tab active" onclick="switchDeviceTab('codex', this)">[프로그램 01] 생태·현상 도감</button>
-        <button class="device-tab" onclick="switchDeviceTab('scanner', this)">[프로그램 02] 단말기 핵심 기능</button>
-        <button class="device-tab" onclick="switchDeviceTab('enemy', this)">[적대 세력] 베일을 찢는 자들</button>
-      </div>
-
-      <div class="device-screen">
-        <div id="tab-codex" class="tab-panel editable">
-          <p><strong>[도감 #001] 숏 트리 (Short Tree) — 정상 개체</strong><br>
-          • 서식지: 숲띠 전역 / 위험도: 안전(Safe)<br>
-          • 특징: 성인 허리 높이의 관목. 추출 수액은 신경 안정 효과가 있어 남부 마을 카페 '숏 트리 샤벳'의 원료로 쓰이며, 시민들의 정서를 안정시켜 결계(베일) 유지에 기여합니다.</p>
-          <p style="margin-bottom:0; color:#FF7B7B;"><strong>[도감 #002] 변이 숏 트리 (Crimson Short Tree) — 오염 개체</strong><br>
-          • 원인: 극단적 감정 폭주 또는 적대 세력의 인위적 오염<br>
-          • 특징: 잎맥이 붉게 변하며 주변 결계(베일)의 마력을 흡수합니다. 발견 즉시 2부대 채집 후 8부대 정화 봉인이 필요합니다.</p>
-        </div>
-
-        <div id="tab-scanner" class="tab-panel editable" style="display:none;">
-          <p><strong>[조직 전용 단말기 사양서]</strong><br>
-          • <strong>위장 모드:</strong> 평소에는 평범한 얇은 유리 수첩으로 보이며, 등록된 요원의 마력 파장이 닿아야만 기동됩니다.<br>
-          • <strong>실시간 도감 &amp; 스캐너:</strong> 현장의 식물·잔류물을 스캔하면 5부대 데이터베이스와 즉시 대조하며, 육안에 보이지 않는 베일 균열을 붉은 파장으로 표시합니다.<br>
-          • <strong>라인 직통망 &amp; 검문 회피:</strong> 1~3부대 → 4~6부대 → 7~9부대로 작전 데이터를 실시간 전송하며, 제국군(감시병) 불시 검문 시 시민용 상업 허가증 화면으로 위장합니다.</p>
-        </div>
-
-        <div id="tab-enemy" class="tab-panel editable" style="display:none;">
-          <p style="color:#FF6B6B;"><strong>[위협 등급: HIGH] 적대 세력 — '베일을 찢는 자들'</strong></p>
-          <p>• <strong>사상 및 목적:</strong> 베일드 제국의 평화를 '신과 관리자들에게 사육당하는 가짜 온실'이라 규정하는 반체제 해방주의 집단. 결계(베일)를 파괴해 통제 없는 날것의 자유를 되찾으려 합니다.<br>
-          • <strong>주요 수법:</strong> 감시가 느슨한 해변가 외곽과 숲띠에 침투해 숏 트리를 고의로 변이시키거나, 시민들 사이에 불안을 퍼뜨려 베일에 균열을 냅니다.</p>
-        </div>
-      </div>
-    </section>
   </main>
 
   <!-- 숨겨진 관리자 접속 모달 -->
@@ -800,14 +1056,14 @@
   <!-- ACCESS GRANTED 연출 화면 -->
   <div id="granted-overlay">
     <div class="granted-title">ACCESS GRANTED</div>
-    <p style="margin-top:20px; letter-spacing:2px;">SWITCHING TO ORGANIZATION &amp; NAMIN PERSPECTIVE...</p>
+    <p style="margin-top:20px; letter-spacing:2px;">INITIALIZING VEILED-OS TERMINAL...</p>
   </div>
 
   <script>
-    let currentPerspective = 'citizen'; // 'citizen' 또는 'org'
-    let isHackerMode = false;
+    let currentPerspective = 'citizen';
+    let isCamoActive = false;
 
-    // 1. 원형 지도 클릭 (현재 시점에 맞는 설명 출력)
+    // 1. 원형 지도 클릭
     function showLocation(e, el) {
       e.stopPropagation();
       const title = currentPerspective === 'org' ? el.dataset.titleOrg : el.dataset.titleCitizen;
@@ -826,16 +1082,150 @@
       });
     }
 
-    // 3. 단말기 OS 탭 전환
-    function switchDeviceTab(tabName, clickedBtn) {
-      document.querySelectorAll('.device-tab').forEach(btn => btn.classList.remove('active'));
+    // =========================================
+    // 단말기 시뮬레이터 전용 자바스크립트
+    // =========================================
+    function switchPdaApp(appName, clickedBtn) {
+      document.querySelectorAll('.pda-app-btn').forEach(btn => btn.classList.remove('active'));
       clickedBtn.classList.add('active');
-
-      document.querySelectorAll('.tab-panel').forEach(panel => panel.style.display = 'none');
-      document.getElementById('tab-' + tabName).style.display = 'block';
+      document.querySelectorAll('.pda-panel').forEach(panel => panel.classList.remove('active'));
+      document.getElementById('app-' + appName).classList.add('active');
     }
 
-    // 4. 시점 텍스트 일괄 전환 함수
+    // 앱 1: 현장 파장 스캔
+    const scanDatabase = {
+      short_normal: {
+        title: '[도감 #001] 정상 숏 트리 (Short Tree)',
+        risk: '안전 (SAFE) — 베일 친화도 99%',
+        color: '#00FF66',
+        detail: '성인 허리 높이의 자생 관목. 추출 수액은 신경 안정 효과가 뛰어나 남부 마을 카페의 시그니처 메뉴 "숏 트리 샤벳"의 원료로 사용되며, 시민들의 정서를 안정시켜 결계(베일)를 튼튼하게 유지합니다.'
+      },
+      short_crimson: {
+        title: '[도감 #002] 변이 숏 트리 (Crimson Short Tree) ⚠️ 경고',
+        risk: '위험 (DANGER) — 베일 마력 역류 감지',
+        color: '#FF6B6B',
+        detail: '적대 세력 "베일을 찢는 자들"의 오염 인자에 노출된 개체입니다. 잎맥이 붉게 변하며 주변 결계의 마력을 흡수하고 있습니다. [권장 조치] 2부대(채집) 즉시 투입 후 8부대 정화 봉인 요망.'
+      },
+      warehouse: {
+        title: '[거점 #S-03] 남부 마을 카페 "창고" 지하 중계소',
+        risk: '보안 유지 중 (STEALTH) — 파수꾼: 루먀, 프사이',
+        color: '#E6D5B8',
+        detail: '겉으로는 카페 원두 창고로 위장되어 있으나, 지하에 도심과 4개 생활관을 잇는 암호화 통신망이 가동 중입니다. 현재 제국군 감시병의 의심 수치는 "낮음"입니다.'
+      },
+      dorm4: {
+        title: '[첩보 #N-04] 북부 4생활관 감시 동향',
+        risk: '주의 (CAUTION) — 부관리자 크시 감사 강화',
+        color: '#FFD166',
+        detail: '4생활관 부관리자 크시가 남부(3생활관) 방면의 보고 누락 건수를 대조하기 시작했습니다. 부관리자 이든은 비공식 경로로 숲띠 외곽을 순찰 중입니다. 3부대 잠입 요원들의 주의가 필요합니다.'
+      }
+    };
+
+    function runFieldScan() {
+      const target = document.getElementById('scan-target').value;
+      const barWrap = document.getElementById('scan-bar-wrap');
+      const barFill = document.getElementById('scan-bar-fill');
+      const resultBox = document.getElementById('scan-result');
+
+      barWrap.style.display = 'block';
+      barFill.style.width = '0%';
+      resultBox.innerHTML = '<span style="color:#00FF66;">[SCANNING...] 마력 파장 및 베일 간섭률 분석 중...</span>';
+
+      setTimeout(() => { barFill.style.width = '100%'; }, 50);
+
+      setTimeout(() => {
+        const data = scanDatabase[target];
+        resultBox.innerHTML = `
+          <div style="color:${data.color}; font-weight:bold; font-size:15px; margin-bottom:6px;">${data.title}</div>
+          <div style="font-size:13px; margin-bottom:8px;">상태 판정: <strong>${data.risk}</strong></div>
+          <div>${data.detail}</div>
+        `;
+      }, 650);
+    }
+
+    // 앱 2: 9부대 직통 무전 송수신
+    function sendUnitDispatch() {
+      const unitCode = document.getElementById('unit-code-input').value.trim().toUpperCase() || '1-A-1';
+      const loc = document.getElementById('dispatch-loc').value;
+      const msgInput = document.getElementById('dispatch-msg');
+      const msg = msgInput.value.trim();
+
+      if (!msg) return;
+
+      const logBox = document.getElementById('comms-log');
+      const now = new Date();
+      const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+      logBox.innerHTML += `<div class="log-entry"><span style="color:#00FF66;">[${timeStr} 지휘부 → ${unitCode}]</span> (${loc}) ${msg}</div>`;
+      msgInput.value = '';
+      logBox.scrollTop = logBox.scrollHeight;
+
+      // 부대 라인별 자동 현장 응답
+      setTimeout(() => {
+        let reply = `[${unitCode} 수신 완료] ${loc} 구역 좌표 확인. 지시대로 움직이겠습니다.`;
+        if (unitCode.startsWith('1-')) {
+          reply = `[${unitCode} 현장팀] ${loc} 진입 완료. 베일 스캐너 켜고 흔적 확보 중입니다.`;
+        } else if (unitCode.startsWith('2-')) {
+          reply = `[${unitCode} 분석팀] ${loc} 관련 데이터 수신. 4생활관 보고서 및 숏 트리 도감과 대조 시작합니다.`;
+        } else if (unitCode.startsWith('3-')) {
+          reply = `[${unitCode} 종결팀] ${loc} 투입 승인. 시민들 눈에 띄지 않게 즉시 마무리하겠습니다.`;
+        }
+        logBox.innerHTML += `<div class="log-entry" style="color:#A8FFC8;">${reply}</div>`;
+        logBox.scrollTop = logBox.scrollHeight;
+      }, 750);
+    }
+
+    // 앱 3: 베일 파장 레이더
+    function scanVeilAnomalies() {
+      const blip = document.getElementById('radar-blip');
+      const percent = document.getElementById('veil-percent');
+      const statusText = document.getElementById('radar-status-text');
+      const repairBtn = document.getElementById('repair-veil-btn');
+
+      blip.style.display = 'block';
+      percent.style.color = '#FF4D4D';
+      percent.innerText = '83.7% (균열 감지!)';
+      statusText.innerHTML = '⚠️ <strong>경고:</strong> 숲띠 남동쪽 경계에서 "베일을 찢는 자들"의 변이 파장이 포착되었습니다!';
+      repairBtn.style.display = 'inline-block';
+    }
+
+    function repairVeil() {
+      const blip = document.getElementById('radar-blip');
+      const percent = document.getElementById('veil-percent');
+      const statusText = document.getElementById('radar-status-text');
+      const repairBtn = document.getElementById('repair-veil-btn');
+
+      blip.style.display = 'none';
+      percent.style.color = '#00FF66';
+      percent.innerText = '99.5% (수복 완료)';
+      statusText.innerHTML = '✔ 8부대 정화 및 봉인 프로토콜 완료. 결계(베일)가 정상 수치로 회복되었습니다.';
+      repairBtn.style.display = 'none';
+    }
+
+    // 앱 4: 제국군 검문 위장 모드 전환
+    function toggleCamouflage() {
+      isCamoActive = !isCamoActive;
+      const osMain = document.getElementById('pda-os-main');
+      const camoScreen = document.getElementById('pda-camo-screen');
+      const btn = document.getElementById('camo-btn');
+
+      if (isCamoActive) {
+        osMain.style.display = 'none';
+        camoScreen.style.display = 'block';
+        btn.style.background = '#00FF66';
+        btn.style.color = '#000';
+        btn.innerText = '🔓 검문 종료 · 단말기 복귀';
+      } else {
+        osMain.style.display = 'block';
+        camoScreen.style.display = 'none';
+        btn.style.background = '#FF4D4D';
+        btn.style.color = '#FFF';
+        btn.innerText = '⚠️ 감시병 접근! 위장 모드 실행';
+      }
+    }
+
+    // =========================================
+    // 시점 전환 & 해킹 편집 모드 로직
+    // =========================================
     function applyPerspective(mode) {
       currentPerspective = mode;
       document.querySelectorAll('.dual').forEach(el => {
@@ -848,20 +1238,17 @@
       }
     }
 
-    // 편집 모드 중에도 시민 시점 / 조직 시점을 오가며 수정할 수 있게 하는 버튼
     function togglePerspectiveInEditor() {
       const nextMode = currentPerspective === 'org' ? 'citizen' : 'org';
       applyPerspective(nextMode);
     }
 
-    // 사용자가 글자를 수정할 때마다 data-citizen / data-org 속성에 자동 동기화
     document.addEventListener('input', function(e) {
       if (e.target.classList && e.target.classList.contains('dual')) {
         e.target.dataset[currentPerspective] = e.target.innerHTML;
       }
     });
 
-    // 5. 숨겨진 글자('일') 클릭 시 모달 열기
     function openAdminModal() {
       document.getElementById('admin-modal').style.display = 'flex';
       const input = document.getElementById('admin-pass');
@@ -874,7 +1261,6 @@
       document.getElementById('admin-modal').style.display = 'none';
     }
 
-    // 6. 암호 확인 ('veiled') -> ACCESS GRANTED & 조직 시점 + 해킹 편집 모드 진입
     function checkAdminPass() {
       const pass = document.getElementById('admin-pass').value.trim().toLowerCase();
       if (pass === 'veiled') {
@@ -884,7 +1270,6 @@
 
         setTimeout(() => {
           overlay.style.display = 'none';
-          isHackerMode = true;
           document.body.classList.add('hacker-mode', 'org-mode');
           document.getElementById('hacker-toolbar').style.display = 'flex';
           applyPerspective('org');
@@ -899,27 +1284,27 @@
       }
     }
 
-    // 7. 수정된 코드 복사 (기본 방문 시엔 시민 시점으로 열리도록 초기화하여 복사)
     function copyEditedCode() {
       const clone = document.documentElement.cloneNode(true);
       clone.querySelector('body').classList.remove('hacker-mode', 'org-mode');
       clone.querySelector('#hacker-toolbar').style.display = 'none';
       clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
 
-      // 복제본은 항상 '시민 시점'이 기본 화면으로 보이도록 텍스트 복원 (조직 데이터는 data-org에 안전 보관됨)
+      // 위장 모드 상태가 켜져 있었더라도 저장 시엔 기본 단말기 화면으로 초기화
+      clone.querySelector('#pda-os-main').style.display = 'block';
+      clone.querySelector('#pda-camo-screen').style.display = 'none';
+
       clone.querySelectorAll('.dual').forEach(el => {
         el.innerHTML = el.dataset.citizen;
       });
 
       const fullHtml = '<!DOCTYPE html>\n' + clone.outerHTML;
       navigator.clipboard.writeText(fullHtml).then(() => {
-        alert('수정된 전체 HTML 코드가 복사되었습니다! (방문자에겐 시민 시점으로 보이고, 일->veiled 입력 시 수정하신 조직 시점이 열립니다.)');
+        alert('수정된 전체 HTML 코드가 복사되었습니다! 깃허브 index.html에 붙여넣으면 영구 저장됩니다.');
       });
     }
 
-    // 8. 해킹 모드 종료 (시민 시점으로 복귀)
     function exitHackerMode() {
-      isHackerMode = false;
       document.body.classList.remove('hacker-mode', 'org-mode');
       document.getElementById('hacker-toolbar').style.display = 'none';
       applyPerspective('citizen');
@@ -928,7 +1313,6 @@
       });
     }
 
-    // 9. 매트릭스 배경 애니메이션
     let matrixInterval;
     function startMatrix() {
       const canvas = document.getElementById('matrix-canvas');
